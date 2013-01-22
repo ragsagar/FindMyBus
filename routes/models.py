@@ -29,12 +29,31 @@ class ListField(models.fields.CharField):
         return json.dumps(value)
 
 
+class Stop(models.Model):
+    """
+    Represents each bus stop.
+    """
+    name = models.CharField(max_length=50)
+    latitude = models.CharField(max_length=20)
+    longitude = models.CharField(max_length=20)
+
+    def __unicode__(self):
+        return self.name
+
+
 class Route(models.Model):
     """
-    Each row will contains stops and other details about each route.
+    Represents each route.
     """
+    # Route number will represented as charfield as there will be alphabets
+    # added to some route numbers.
     number = models.CharField(max_length=5)
-    name = models.CharField(max_length=80)
-    stops = ListField(max_length=3000)
-    from_stop = models.CharField(max_length=40)
-    to_stop = models.CharField(max_length=40)
+    name = models.CharField(max_length=100)
+    stops = models.ManyToManyField(Stop, related_name='stops')
+    from_stop = models.ForeignKey(Stop, related_name='from_stop')
+    to_stop = models.ForeignKey(Stop, related_name='to_stop')
+
+    def __unicode__(self):
+        return unicode(self.number)
+
+
