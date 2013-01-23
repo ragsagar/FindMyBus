@@ -1,5 +1,6 @@
 import json
 from django.db import models
+from django.db.models import Q
 
 
 class ListField(models.fields.CharField):
@@ -41,6 +42,22 @@ class Stop(models.Model):
         return self.name
 
 
+class RouteManager(models.Manager):
+    """
+    Custom methods that makes searching for places goes here.
+    """
+    def get_routes(self, from_place, to_place):
+        """
+        Returns `Route` objects that contains both stops.
+        """
+        #return self.filter(
+                #Q(stops__name__icontains=from_place) &
+                #Q(stops__name__icontains=to_place)
+                #)
+        return self.filter(stops__name__icontains=from_place).filter(
+                                            stops__name__icontains=to_place)
+
+
 class Route(models.Model):
     """
     Represents each route.
@@ -52,6 +69,7 @@ class Route(models.Model):
     stops = models.ManyToManyField(Stop, related_name='stops')
     from_stop = models.ForeignKey(Stop, related_name='from_stop')
     to_stop = models.ForeignKey(Stop, related_name='to_stop')
+    objects = RouteManager()
 
     def __unicode__(self):
         return unicode(self.number)
