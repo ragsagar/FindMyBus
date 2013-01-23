@@ -54,8 +54,9 @@ class RouteManager(models.Manager):
                 #Q(stops__name__icontains=from_place) &
                 #Q(stops__name__icontains=to_place)
                 #)
-        return self.filter(stops__name__icontains=from_place).filter(
-                                            stops__name__icontains=to_place)
+        return self.filter(stops__name__icontains=from_place). \
+                    filter(stops__name__icontains=to_place). \
+                    distinct()
 
 
 class Route(models.Model):
