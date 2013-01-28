@@ -8,7 +8,548 @@ SET standard_conforming_strings = on;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
 
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
 SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: auth_group; Type: TABLE; Schema: public; Owner: bususer; Tablespace: 
+--
+
+CREATE TABLE auth_group (
+    id integer NOT NULL,
+    name character varying(80) NOT NULL
+);
+
+
+ALTER TABLE public.auth_group OWNER TO bususer;
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE; Schema: public; Owner: bususer
+--
+
+CREATE SEQUENCE auth_group_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_group_id_seq OWNER TO bususer;
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: bususer
+--
+
+ALTER SEQUENCE auth_group_id_seq OWNED BY auth_group.id;
+
+
+--
+-- Name: auth_group_permissions; Type: TABLE; Schema: public; Owner: bususer; Tablespace: 
+--
+
+CREATE TABLE auth_group_permissions (
+    id integer NOT NULL,
+    group_id integer NOT NULL,
+    permission_id integer NOT NULL
+);
+
+
+ALTER TABLE public.auth_group_permissions OWNER TO bususer;
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: bususer
+--
+
+CREATE SEQUENCE auth_group_permissions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_group_permissions_id_seq OWNER TO bususer;
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: bususer
+--
+
+ALTER SEQUENCE auth_group_permissions_id_seq OWNED BY auth_group_permissions.id;
+
+
+--
+-- Name: auth_permission; Type: TABLE; Schema: public; Owner: bususer; Tablespace: 
+--
+
+CREATE TABLE auth_permission (
+    id integer NOT NULL,
+    name character varying(50) NOT NULL,
+    content_type_id integer NOT NULL,
+    codename character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.auth_permission OWNER TO bususer;
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE; Schema: public; Owner: bususer
+--
+
+CREATE SEQUENCE auth_permission_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_permission_id_seq OWNER TO bususer;
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: bususer
+--
+
+ALTER SEQUENCE auth_permission_id_seq OWNED BY auth_permission.id;
+
+
+--
+-- Name: auth_user; Type: TABLE; Schema: public; Owner: bususer; Tablespace: 
+--
+
+CREATE TABLE auth_user (
+    id integer NOT NULL,
+    username character varying(30) NOT NULL,
+    first_name character varying(30) NOT NULL,
+    last_name character varying(30) NOT NULL,
+    email character varying(75) NOT NULL,
+    password character varying(128) NOT NULL,
+    is_staff boolean NOT NULL,
+    is_active boolean NOT NULL,
+    is_superuser boolean NOT NULL,
+    last_login timestamp with time zone NOT NULL,
+    date_joined timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.auth_user OWNER TO bususer;
+
+--
+-- Name: auth_user_groups; Type: TABLE; Schema: public; Owner: bususer; Tablespace: 
+--
+
+CREATE TABLE auth_user_groups (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    group_id integer NOT NULL
+);
+
+
+ALTER TABLE public.auth_user_groups OWNER TO bususer;
+
+--
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE; Schema: public; Owner: bususer
+--
+
+CREATE SEQUENCE auth_user_groups_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_user_groups_id_seq OWNER TO bususer;
+
+--
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: bususer
+--
+
+ALTER SEQUENCE auth_user_groups_id_seq OWNED BY auth_user_groups.id;
+
+
+--
+-- Name: auth_user_id_seq; Type: SEQUENCE; Schema: public; Owner: bususer
+--
+
+CREATE SEQUENCE auth_user_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_user_id_seq OWNER TO bususer;
+
+--
+-- Name: auth_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: bususer
+--
+
+ALTER SEQUENCE auth_user_id_seq OWNED BY auth_user.id;
+
+
+--
+-- Name: auth_user_user_permissions; Type: TABLE; Schema: public; Owner: bususer; Tablespace: 
+--
+
+CREATE TABLE auth_user_user_permissions (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    permission_id integer NOT NULL
+);
+
+
+ALTER TABLE public.auth_user_user_permissions OWNER TO bususer;
+
+--
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: bususer
+--
+
+CREATE SEQUENCE auth_user_user_permissions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_user_user_permissions_id_seq OWNER TO bususer;
+
+--
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: bususer
+--
+
+ALTER SEQUENCE auth_user_user_permissions_id_seq OWNED BY auth_user_user_permissions.id;
+
+
+--
+-- Name: django_admin_log; Type: TABLE; Schema: public; Owner: bususer; Tablespace: 
+--
+
+CREATE TABLE django_admin_log (
+    id integer NOT NULL,
+    action_time timestamp with time zone NOT NULL,
+    user_id integer NOT NULL,
+    content_type_id integer,
+    object_id text,
+    object_repr character varying(200) NOT NULL,
+    action_flag smallint NOT NULL,
+    change_message text NOT NULL,
+    CONSTRAINT django_admin_log_action_flag_check CHECK ((action_flag >= 0))
+);
+
+
+ALTER TABLE public.django_admin_log OWNER TO bususer;
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE; Schema: public; Owner: bususer
+--
+
+CREATE SEQUENCE django_admin_log_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.django_admin_log_id_seq OWNER TO bususer;
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: bususer
+--
+
+ALTER SEQUENCE django_admin_log_id_seq OWNED BY django_admin_log.id;
+
+
+--
+-- Name: django_content_type; Type: TABLE; Schema: public; Owner: bususer; Tablespace: 
+--
+
+CREATE TABLE django_content_type (
+    id integer NOT NULL,
+    name character varying(100) NOT NULL,
+    app_label character varying(100) NOT NULL,
+    model character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.django_content_type OWNER TO bususer;
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE; Schema: public; Owner: bususer
+--
+
+CREATE SEQUENCE django_content_type_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.django_content_type_id_seq OWNER TO bususer;
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: bususer
+--
+
+ALTER SEQUENCE django_content_type_id_seq OWNED BY django_content_type.id;
+
+
+--
+-- Name: django_session; Type: TABLE; Schema: public; Owner: bususer; Tablespace: 
+--
+
+CREATE TABLE django_session (
+    session_key character varying(40) NOT NULL,
+    session_data text NOT NULL,
+    expire_date timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.django_session OWNER TO bususer;
+
+--
+-- Name: django_site; Type: TABLE; Schema: public; Owner: bususer; Tablespace: 
+--
+
+CREATE TABLE django_site (
+    id integer NOT NULL,
+    domain character varying(100) NOT NULL,
+    name character varying(50) NOT NULL
+);
+
+
+ALTER TABLE public.django_site OWNER TO bususer;
+
+--
+-- Name: django_site_id_seq; Type: SEQUENCE; Schema: public; Owner: bususer
+--
+
+CREATE SEQUENCE django_site_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.django_site_id_seq OWNER TO bususer;
+
+--
+-- Name: django_site_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: bususer
+--
+
+ALTER SEQUENCE django_site_id_seq OWNED BY django_site.id;
+
+
+--
+-- Name: routes_route; Type: TABLE; Schema: public; Owner: bususer; Tablespace: 
+--
+
+CREATE TABLE routes_route (
+    id integer NOT NULL,
+    number character varying(5) NOT NULL,
+    name character varying(100) NOT NULL,
+    from_stop_id integer NOT NULL,
+    to_stop_id integer NOT NULL
+);
+
+
+ALTER TABLE public.routes_route OWNER TO bususer;
+
+--
+-- Name: routes_route_id_seq; Type: SEQUENCE; Schema: public; Owner: bususer
+--
+
+CREATE SEQUENCE routes_route_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.routes_route_id_seq OWNER TO bususer;
+
+--
+-- Name: routes_route_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: bususer
+--
+
+ALTER SEQUENCE routes_route_id_seq OWNED BY routes_route.id;
+
+
+--
+-- Name: routes_route_stops; Type: TABLE; Schema: public; Owner: bususer; Tablespace: 
+--
+
+CREATE TABLE routes_route_stops (
+    id integer NOT NULL,
+    route_id integer NOT NULL,
+    stop_id integer NOT NULL
+);
+
+
+ALTER TABLE public.routes_route_stops OWNER TO bususer;
+
+--
+-- Name: routes_route_stops_id_seq; Type: SEQUENCE; Schema: public; Owner: bususer
+--
+
+CREATE SEQUENCE routes_route_stops_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.routes_route_stops_id_seq OWNER TO bususer;
+
+--
+-- Name: routes_route_stops_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: bususer
+--
+
+ALTER SEQUENCE routes_route_stops_id_seq OWNED BY routes_route_stops.id;
+
+
+--
+-- Name: routes_stop; Type: TABLE; Schema: public; Owner: bususer; Tablespace: 
+--
+
+CREATE TABLE routes_stop (
+    id integer NOT NULL,
+    name character varying(50) NOT NULL,
+    latitude character varying(20) NOT NULL,
+    longitude character varying(20) NOT NULL
+);
+
+
+ALTER TABLE public.routes_stop OWNER TO bususer;
+
+--
+-- Name: routes_stop_id_seq; Type: SEQUENCE; Schema: public; Owner: bususer
+--
+
+CREATE SEQUENCE routes_stop_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.routes_stop_id_seq OWNER TO bususer;
+
+--
+-- Name: routes_stop_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: bususer
+--
+
+ALTER SEQUENCE routes_stop_id_seq OWNED BY routes_stop.id;
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: bususer
+--
+
+ALTER TABLE ONLY auth_group ALTER COLUMN id SET DEFAULT nextval('auth_group_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: bususer
+--
+
+ALTER TABLE ONLY auth_group_permissions ALTER COLUMN id SET DEFAULT nextval('auth_group_permissions_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: bususer
+--
+
+ALTER TABLE ONLY auth_permission ALTER COLUMN id SET DEFAULT nextval('auth_permission_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: bususer
+--
+
+ALTER TABLE ONLY auth_user ALTER COLUMN id SET DEFAULT nextval('auth_user_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: bususer
+--
+
+ALTER TABLE ONLY auth_user_groups ALTER COLUMN id SET DEFAULT nextval('auth_user_groups_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: bususer
+--
+
+ALTER TABLE ONLY auth_user_user_permissions ALTER COLUMN id SET DEFAULT nextval('auth_user_user_permissions_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: bususer
+--
+
+ALTER TABLE ONLY django_admin_log ALTER COLUMN id SET DEFAULT nextval('django_admin_log_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: bususer
+--
+
+ALTER TABLE ONLY django_content_type ALTER COLUMN id SET DEFAULT nextval('django_content_type_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: bususer
+--
+
+ALTER TABLE ONLY django_site ALTER COLUMN id SET DEFAULT nextval('django_site_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: bususer
+--
+
+ALTER TABLE ONLY routes_route ALTER COLUMN id SET DEFAULT nextval('routes_route_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: bususer
+--
+
+ALTER TABLE ONLY routes_route_stops ALTER COLUMN id SET DEFAULT nextval('routes_route_stops_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: bususer
+--
+
+ALTER TABLE ONLY routes_stop ALTER COLUMN id SET DEFAULT nextval('routes_stop_id_seq'::regclass);
+
 
 --
 -- Data for Name: auth_group; Type: TABLE DATA; Schema: public; Owner: bususer
@@ -26,20 +567,18 @@ SELECT pg_catalog.setval('auth_group_id_seq', 1, false);
 
 
 --
--- Data for Name: django_content_type; Type: TABLE DATA; Schema: public; Owner: bususer
+-- Data for Name: auth_group_permissions; Type: TABLE DATA; Schema: public; Owner: bususer
 --
 
-COPY django_content_type (id, name, app_label, model) FROM stdin;
-1	permission	auth	permission
-2	group	auth	group
-3	user	auth	user
-4	content type	contenttypes	contenttype
-5	session	sessions	session
-6	site	sites	site
-7	log entry	admin	logentry
-8	stop	routes	stop
-9	route	routes	route
+COPY auth_group_permissions (id, group_id, permission_id) FROM stdin;
 \.
+
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: bususer
+--
+
+SELECT pg_catalog.setval('auth_group_permissions_id_seq', 1, false);
 
 
 --
@@ -75,21 +614,6 @@ COPY auth_permission (id, name, content_type_id, codename) FROM stdin;
 26	Can change route	9	change_route
 27	Can delete route	9	delete_route
 \.
-
-
---
--- Data for Name: auth_group_permissions; Type: TABLE DATA; Schema: public; Owner: bususer
---
-
-COPY auth_group_permissions (id, group_id, permission_id) FROM stdin;
-\.
-
-
---
--- Name: auth_group_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: bususer
---
-
-SELECT pg_catalog.setval('auth_group_permissions_id_seq', 1, false);
 
 
 --
@@ -161,6 +685,23 @@ SELECT pg_catalog.setval('django_admin_log_id_seq', 1, false);
 
 
 --
+-- Data for Name: django_content_type; Type: TABLE DATA; Schema: public; Owner: bususer
+--
+
+COPY django_content_type (id, name, app_label, model) FROM stdin;
+1	permission	auth	permission
+2	group	auth	group
+3	user	auth	user
+4	content type	contenttypes	contenttype
+5	session	sessions	session
+6	site	sites	site
+7	log entry	admin	logentry
+8	stop	routes	stop
+9	route	routes	route
+\.
+
+
+--
 -- Name: django_content_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: bususer
 --
 
@@ -189,1759 +730,6 @@ COPY django_site (id, domain, name) FROM stdin;
 --
 
 SELECT pg_catalog.setval('django_site_id_seq', 1, true);
-
-
---
--- Data for Name: routes_stop; Type: TABLE DATA; Schema: public; Owner: bususer
---
-
-COPY routes_stop (id, name, latitude, longitude) FROM stdin;
-1	Bajaj Mhalunge		
-2	Suvarna Fabricators		
-3	MIDC Phata		
-4	Mhalunge Phata		
-5	LueMax		
-6	Chorex Company		
-7	I B P Pump		
-8	Pancharatna Complex		
-9	Kharabwadi		
-10	Ranubai Mala		
-11	Pegra gran company		
-12	Talegaon Phata ST Stand		
-13	Petrol Pump		
-14	Alandi Phata		
-15	Kuruli Gaon		
-16	Gaikwad wasti 		
-17	Moshi phata chimboli phata		
-18	Hood company		
-19	Moshi goan		
-20	Chaudhari dhaba		
-21	Bankar Vasti Moshi		
-22	Borate wasti		
-23	Juna Jakat naka		
-24	Tan Protex		
-25	Wakhar Mahamandal Bhosari		
-26	Panjarpol		
-27	Sadgurunagar PCMT depot 		
-28	Bhosari gaon		
-29	Century Enka Colony 		
-30	Landewadi		
-31	Philips		
-32	MIDC Bhosari		
-33	Bhosari police station		
-34	Nashik phata		
-35	Kasarwadi		
-36	Forbes marshal stop		
-37	Alfa Laval Atlas Company		
-38	Sandwik		
-39	Fugewadi		
-40	Dapodi		
-41	Bopodi Jakat Naka		
-42	Bopodi		
-43	Khadaki		
-44	Khadaki railway station		
-45	Petrol Pump Khadki		
-46	Khadaki church stop		
-47	Khadaki post office		
-48	Raja bangalow		
-49	Krutrim Reshim Paidas Kendra		
-50	Poultry Farm Old Mumbai Pune Road		
-51	Mariaai Gate Old Mumbai Pune Road		
-52	Bajaj showroom		
-53	Labor office		
-54	Patil Estate		
-55	Engineering college hostel		
-56	Modern Highschool		
-57	PMC		
-58	Pune Station Depot		
-59	GPO		
-60	Collector kacheri		
-61	Ambedkar bhavan		
-62	Juna Bajar 		
-63	Kumbhar wada		
-64	Shivaji putala pmc		
-65	shimala office shivajinagar		
-66	Masoba gate		
-67	Pumping station		
-68	Pune central		
-69	E square		
-70	Rangehills Corner		
-71	Rajbhavan		
-72	Boys batalian		
-73	Kasturba vasahat		
-74	Sindh colony gate 2		
-75	Bremen chauk		
-76	Body gate		
-77	Aundh gaon		
-78	Sangvi phata		
-79	Aundh chest hospital		
-80	Aundh post office		
-81	ESI Hospital		
-82	Rakshak chauk		
-83	Military Stores		
-84	Wakad phata 		
-85	Jagtap Dairy 		
-86	Kaspate Vasti 		
-87	Kalewadi phata		
-88	16 Number 		
-89	Laxman nagar		
-90	Dange chowk		
-91	Swargate		
-92	Sarasbag		
-93	Bhikardas maruti madnir		
-94	Shanipar		
-95	A B Chowk		
-96	Dakshinabhimukh Maruti mandir		
-97	Shaniwar wada		
-98	PMC mangala		
-99	Shivaji nagar ST Stand		
-100	N T wadi		
-101	Balgandharv sambhaji par		
-102	Deccan Gymkhana		
-103	Deccan Corner Sambhaji Pul Corner		
-104	Garware college		
-105	Petrol Pump Karve Road		
-106	Nal Stop		
-107	SNDT college		
-108	Paud Phata Dashabhuja Ganpati		
-109	Maruti mandir karve road		
-110	Karve putala		
-111	Kothrud Stand		
-112	Dahanukar colony		
-113	Wadache Jhad Bhairavnath Mandir		
-114	Karvenagar		
-115	Warje Jakatnaka		
-116	Ishanya Nagari		
-117	Madiwale colony		
-118	S P college		
-119	Maharashtra mandal		
-120	Sahitya parishad peru gate		
-121	Goodluck Chowk 		
-122	F C College		
-123	Dnyaneshwar Paduka chowk		
-124	Lokmangal 		
-125	Labour office		
-126	Bajaj showroom wakadewadi		
-127	Mula road bhaiyawadi		
-128	Pachawadw		
-129	Holkar Water Supply 		
-130	Sapras post		
-131	Deccan college 		
-132	Ambedkar Society		
-133	RTO New		
-134	Phulenagar		
-135	MES Water Works		
-136	Mental Hospital Corner		
-137	Shantinagar		
-138	Sathe Biscuit company		
-139	Vishrantwadi		
-140	Panyachi Taki		
-141	Bhairavnagar 		
-142	Gokul Nagar 		
-143	Sai Corner		
-144	Dhanori Gaon		
-145	Lohoan		
-146	Katraj bus stand		
-147	Katraj dairy Sarpodyan		
-148	Bharti vidyapeeth gate		
-149	Chaitanya nagar		
-150	Balaji nagar		
-151	Vishweshwar Bank KK market		
-152	Padmavati corner		
-153	Natu bag		
-154	Aranyeshwar Corner		
-155	Bhapkar petrol pump City Pride		
-156	Panchami hotel		
-157	Laxmi Narayan Theature		
-158	Shivajinagar Station		
-159	Bhosari Police Station 		
-160	Ambegaon		
-161	Gaimukh Ambegaon Phata		
-162	Ramnagar Katraj		
-163	Dattanagar Katraj		
-164	Chandrabhaga Restaurant		
-165	Ganpati mandir		
-166	PICT Bharati vidyapeeth		
-167	Rajaram Gas agency		
-168	Surya hospital		
-169	Bhumkar Nagar		
-170	Narhe Gaon		
-171	Bhumkar Complex		
-172	Ajinkyatara		
-173	Parikh complex		
-174	Radhika Soc		
-175	Poultry farm singhgad road		
-176	Raykar wasti		
-177	Dhayari Gaon		
-178	Gar mala		
-179	Dangat wasti		
-180	Sanas Vidyalaya		
-181	Lagad wasti		
-182	Mate Pat Sasa company		
-183	Nanded Phata		
-184	Jadhavwadi Andh shala		
-185	CWPRS gate no.1		
-186	Nandoshi Phata		
-187	Kolhewadi		
-188	Khadakwasla Gaon		
-189	Khadakwasla Dharan		
-190	Marketyard		
-191	Wakhar Mahamandal Marketyard		
-192	Godown Marketyard		
-193	Shivaji Putala Kalubai Mandir		
-194	Mafco Company		
-195	Parvati payatha		
-196	Dandekar pul		
-197	Pan mala Sinhgad Road		
-198	Jal Shuddhikarn Kendra Sinhgad Road		
-199	Ganesh mala		
-200	Vitbhatti Sinhgad Road		
-201	Vitthalwadi jakat naka		
-202	Jaydeo nagar 		
-203	Vitthalwadi Mandir Hingne		
-204	Hingne rasta		
-205	Anand nagar singhgad rd		
-206	Manik Bag		
-207	Indian hum company		
-208	Wadgaon phata		
-209	Patil colony		
-210	Dhayari phata		
-211	Childrens School		
-212	IAT Gate Girinagar		
-213	Sant Dharmaji Samadhi		
-214	Gorhe Budruk		
-215	Gorhe bu. jeevan shikshan mandir		
-216	Donje Goan Phata		
-217	Paygude wasti Donje		
-218	Venkatesh poultry farm		
-219	Gorhe khurd		
-220	Malatwadi		
-221	Khanapur		
-222	Kasaba Police Chowky		
-223	Lalmahal		
-224	RCM 		
-225	Rastewada		
-226	Apolo Talkies		
-227	KEM hospital		
-228	Sasoon hospital		
-229	Pune station		
-230	Ruby hall		
-231	Wadia college		
-232	Blue Diamond hotel		
-233	Saint Meera college		
-234	Budhrani Hospital		
-235	Annadhanya Godam		
-236	Bungalow no 105		
-237	Kawdewasti		
-238	Kasturba School north lane		
-239	Kalyani nagar		
-240	Pune University Gate		
-241	chavan nagar university road		
-242	Sakal nagar		
-243	Sindh colony		
-244	Baner phata		
-245	Sanewadi		
-246	Anand park sindhi colony		
-247	ITI parihar Chauk		
-248	Police workshop		
-249	Sangvi Phata		
-250	Nurses Quarters		
-251	Ba ra gholap		
-252	Navi Sangvi		
-253	Panyachi taki sangvi		
-254	shitole nagar corner		
-255	Anand nagar		
-256	Sangvi goan		
-257	Vasantdada Putala		
-258	Hadapsar gadital		
-259	Hadapsar gaon		
-260	Mohammadwadi jakat naka		
-261	Kanifnath Soc.		
-262	Sasane Nagar		
-263	Railway Crossing Mohammadwadi		
-264	sayadnagar		
-265	Hari Hareshwar mandir		
-266	Wadkar mala 		
-267	Tarawade wasti		
-268	Mahamdwadi Gaon		
-269	Mohammadwadi shala		
-270	Kadwasti		
-271	Khole wasti 		
-272	Punekar wasti		
-273	Undrigaon 		
-274	Kunte Chauk		
-275	Gokhale hall		
-276	Vijay Talkies		
-277	Alka talkies		
-278	Law college		
-279	Bhandarkar Institute		
-280	Symbiosis college		
-281	Sheti mahamandal		
-282	Vetal Maharaj chauk		
-283	Shivaji housing board bus stop		
-284	ICC bus stop		
-285	Chatushringi payatha		
-286	Gents hostel university		
-287	Vidyapeeth Press		
-288	Ladies Hostel Pune University		
-289	Sevak Vasaha		
-290	Pune University Main Building		
-291	Dattanagar Highway		
-292	Trimurti garden		
-293	Ambegaon Highway		
-294	Shubham hotel		
-295	Krushnai Mangal Karyalaya		
-296	Wadgaon bu. Highway		
-297	Daulatnagar Patilbag		
-298	Warje gaon highway		
-299	Popular Nagar Cipla cancer care entre		
-300	Atulnagar gate		
-301	Aditya garden city		
-302	Wonder funkey		
-303	Raviraj residency		
-304	Chandani chauk		
-305	Paranjpe scheme		
-306	Nisarg Aaditya group		
-307	DSK Toyota Showroom		
-308	HRA relance		
-309	Sutarwadi		
-310	Sayali Restaurant		
-311	Soos phata		
-312	Shivsagar mangal karyalay		
-313	Yashoda Nivas		
-314	Mhalunge corner		
-315	Chha. Shivaji Krida Sankul		
-316	Mutha Pool Balewadi		
-317	Wakad Highway		
-318	BU Bhandari Showroom		
-319	Wakad Police Chowky		
-320	Padmji Paper Mill		
-321	Dattanagar Chinchwad		
-322	Birla Hospital		
-323	Jakatnaka pavanapul		
-324	Walhekarwadi phata		
-325	Chafekar chauk		
-326	Chinchwad station		
-327	Mehta hospital		
-328	Kalbhor nagar bus stop		
-329	Rustan company		
-330	Akurdi khandoba chauk		
-331	Bajaj auto		
-332	Pradhikaran Chowk		
-333	Nigadi jakat naka		
-334	Bhakti shakti depot		
-335	Chikhali		
-336	Moshi phata chikhali		
-337	Jadhav wadi phata		
-338	Jadhav wadi		
-339	Ahire wadi		
-340	Sukhwani		
-341	Agarwal Container		
-342	New Life		
-343	Yashwant Nagar Telco Road		
-344	Yashwant nagar corner		
-345	Swapna nagari		
-346	Master bakery		
-347	Zero Boys		
-348	Nehrunagar corner		
-349	PCMT		
-350	Mahesh nagar		
-351	YCM		
-352	Wadilal		
-353	Vallabhnagar		
-354	Deichi Company		
-355	Ganpati matha		
-356	Dnanesh society		
-357	Warje malwadi		
-358	Tapodham		
-359	Warje jakatnaka		
-360	Wadache jhad		
-361	Maruti Mandir Karve Road		
-362	Paud phata dashbhuja mandir		
-363	Thergaon phata 		
-364	Chinchwad gaon		
-365	Pimprigaon		
-366	Ashok Talkies		
-367	Jaihind School		
-368	Delux		
-369	Karachi chauk		
-370	Lalmandir		
-371	Bhatnagar		
-372	Finolex		
-373	Pimpri  chauk Bus stand		
-374	Nehrunagar		
-375	Jyoti school		
-376	Vishal nagar C ward office		
-377	Abhi Chemicals		
-378	Jayanand khira		
-379	Idrayani nagar corner		
-380	Tulashi chemikals		
-381	Gavane Vasti 		
-382	PCMT chauk		
-383	NDA gate Kondhava gate		
-384	Kondhava dhavade		
-385	Bhimnagar		
-386	Uttamanagar		
-387	Ahire gate Phata		
-388	Ingale colony		
-389	Deshmukhwadi		
-390	Shivane gaon		
-391	Dudhane wasti		
-392	HM Hostel		
-393	Queen Mary Technical		
-394	LIC Colony Khadki		
-395	40 aundh road		
-396	Bhaurao Patil Chowk		
-397	Bopodi Gaon		
-398	Gangaram park		
-399	Kirloskar oil engine manaji bag		
-400	Alegaonkar High school		
-401	Khadki Bazar		
-402	Lakshi narayan theature		
-403	Bhapkar Petrol Pump City pride		
-404	Natu Bag		
-405	More bag		
-406	Gujarwadi Phata		
-407	Mangdewadi Petrol Pump		
-408	Mangdewadi Phata		
-409	Bhilarewadi		
-410	Stage kramank 6		
-411	Stage kramank 7		
-412	Waghjai Mandir		
-413	Ghat utaar Walan		
-414	Gogalwadi Phata		
-415	Adlar Engineering		
-416	Shindewadi Gujarwadi		
-417	Velugoan Phata		
-418	Grand Hotel		
-419	Shivapur Bag Post office		
-420	Kodhanpur Phata		
-421	Oval vasti		
-422	Khed		
-423	Shivapur wada		
-424	Raje Phata		
-425	Gulnur Farm		
-426	Chillal masala company		
-427	Arvi phata		
-428	Kandhare poultry farm		
-429	Diamond Company		
-430	Kondhanpur Gaon		
-431	Bauddha Vasti		
-432	Rahatawade Vasti		
-433	Rahatawade Gaon		
-434	Newad wasti		
-435	Sane wasti		
-436	Sane chauk		
-437	Krushnanagar Corner		
-438	Kasturi market		
-439	Ajantha nagar corner		
-440	Thermax		
-441	Yamunanagar Corner		
-442	LIC corner		
-443	Sweet mart		
-444	Akurdi Khandoba Chowk		
-445	Jai Hind Vidyalaya		
-446	Jakatnaka Pavanapool		
-447	Birla hospital		
-448	Mandai		
-449	Deccan corner sambhaji pool		
-450	Paud phata police chauky		
-451	More vidyalaya		
-452	LIC colony		
-453	Anand nagar paud road		
-454	Jai bhavani 		
-455	Vanaz Corner		
-456	Paramhans corner		
-457	Kachara depot		
-458	Bharti nagar		
-459	kothrud depot		
-460	Shinde farm		
-461	Bavdhan Khind 		
-462	Shinde Nagar		
-463	Bavdhan goan		
-464	Ramnagar Bharat Electronics		
-465	ARDE Colony		
-466	Pashan		
-467	ARDE bus stop		
-468	IITM		
-469	Panchwati		
-470	NCL		
-471	NCL Market		
-472	Loyala Highschool		
-473	Police head office		
-474	Pune Vidyapeeth		
-475	E Square		
-476	Shivaji putala		
-477	Krutrim reshim paidas kendra		
-478	Raja Bungalow		
-479	Khadki church stop		
-480	Alfa laval atlas company		
-481	Kasrawadi		
-482	Deichi company		
-483	HA Factory D Y Patil college		
-484	Kharalwadi		
-485	Pimpri chauk Bus stop		
-486	Premier company		
-487	Cantonment jakat naka		
-488	Kohima line		
-489	B sub depot		
-490	Kendriya vidyalaya		
-491	Garden city		
-492	CISV		
-493	Dehu phata highway		
-494	Dehuroad railway staion		
-495	Dehuroad bajar		
-496	Gurudwara dehu road		
-497	Dehu road police station		
-498	Central Restaurant		
-499	Krushna Mandir Dehu Road		
-500	Mata Amardevi temple		
-501	Amarjai Begdewadi phata		
-502	Shankarwadi		
-503	Shelarwadi		
-504	Pune poultry farm		
-505	Somatne Phata		
-506	Talegaon Khind		
-507	Talegoan phata		
-508	Bhandari hospital		
-509	Jijamata chowk Talegaon		
-510	Talegaon nagar parishad		
-511	Paranjpe Hospital		
-512	Talegaon station		
-513	Egale Plax Petrol Pump		
-514	Bharat Petrol Pump		
-515	Samartha Vidyalaya Wadgaon Maval		
-516	Paisa Phand  Kach Karkhana		
-517	Wadgaon Maval Phata		
-518	Jambhe		
-519	Jambhe Prathamik Shala		
-520	Nerhe Phata		
-521	Tajane Vasti		
-522	Punavale Corner		
-523	Punavale		
-524	Kudale Farm		
-525	Tathwade		
-526	Dairy Farm		
-527	Laxman nagar 		
-528	Sindh Colony Gate2		
-529	Boys Batalian		
-530	College of engineering pune		
-531	RTO wellesley road		
-532	Alankar Talkies		
-533	PMC Mangala		
-534	Kumbhar Wada		
-535	Guruprasad bangala		
-536	Band garden		
-537	Yerwada		
-538	wadia bangala		
-539	Shastri nagar		
-540	Agakhan palace		
-541	Ramwadi Jakatnaka		
-542	Ramwadi		
-543	Weikfield		
-544	ISL Company		
-545	WNC Company		
-546	Dharmanagar 5 va Mail		
-547	Tata Guardroom Kharadi Phata		
-548	Chandan Nagar		
-549	NEI Company		
-550	Khule Wadi		
-551	Agrawal Colony		
-552	Akashwani hadapasar		
-553	15 number Manjari Gaon Phata		
-554	Laxmideep colony		
-555	Rambag solapur rd		
-556	Manjri farm		
-557	Phursungi gaon phata		
-558	Krushi mahavidyalaya		
-559	Kavadi pat		
-560	Kavadi rasta		
-561	Wakvasti		
-562	Fuel depot		
-563	Kadam wasti		
-564	Loni station		
-565	Loni phata		
-566	Ramkrushna rasayan karkhana		
-567	Malyacha mala		
-568	Borkar wasti		
-569	Tamnya wasti		
-570	Theur phata		
-571	Kalbhor wasti solapur rd.		
-572	Tendulkar wasti		
-573	Kunjirwadi		
-574	Naygaon phata		
-575	Railway gate no.1 		
-576	Chaufula 		
-577	Yadav Wasti Chaufula 		
-578	Malwadi Naygaon 		
-579	Naygoan 		
-580	Malran 		
-581	Prayagdham Ashram 		
-582	Prayagdham Hospital		
-583	Bodhe wasti 		
-584	Railway Gate Aata Mill Karkhana 		
-585	Bagade wasti 		
-586	Railway Station Uruli Kanchan 		
-587	Sahakar Nagar		
-588	Kranti Society		
-589	Sarang Society		
-590	Lakshminagar Corner		
-591	Bank of Maharashtra Parvati gaon		
-592	Mitramandal Sabhagruh		
-593	Ghorpade peth colony		
-594	S T Divisional office		
-595	Meera society		
-596	Golibar maidan		
-597	Juna pul gate		
-598	Bombay Garage		
-599	West end talkies		
-600	Nigadi		
-601	Ruston Company		
-602	Kalbhor nahar bus stop		
-603	chinchwad station		
-604	Chinchwad chauk		
-605	H A Factory		
-606	Supply Depot		
-607	Amunition Factory Road		
-608	Mathyadist Church		
-609	Shadal baba Darga 		
-610	Jahangir Hospital		
-611	Sutardara		
-612	Shivteerthnagar		
-613	LIC Colony Paud Road		
-614	Paudphata police chowky		
-615	Nal stop		
-616	Petrol pump karve road		
-617	Deccan corner sambhaji pul		
-618	Chitrashala		
-619	Sadashiv Peth Houd		
-620	Gadikhana		
-621	Shahu chauk		
-622	Mamledar kacheri		
-623	Gokul bhavan		
-624	Pandavnagar		
-625	Shanipar Bus Stand		
-626	Sambhaji Nagar		
-627	Maruti Mandir 		
-628	Raja Bahadur mill		
-629	Rajaram pul		
-630	Wadgaon budruk		
-631	Magarpatta		
-632	Gurushankar math		
-633	Vaidwadi		
-634	Ram tekadi		
-635	Kalubai mandir solapur road		
-636	Bhatnagar 		
-637	Uday Bag 		
-638	Sopan Bag 		
-639	Railway Crossing Gorpadi 		
-640	Kawade Nagar 		
-641	Kalashankar		
-642	Vatare mala		
-643	Shirke Company 		
-644	Anant Talkies		
-645	Ghorpadi Shala		
-646	Ghorpadi Post Office		
-647	Milletory Depo Mitti Ghar		
-648	Family camp		
-649	Khan Road		
-650	Sai sayaji nagar		
-651	Vishrambag wada		
-652	Phadake Haud		
-653	15 August Lodge Somwar Peth		
-654	Rajiv Gandhi Nagar Upper Depot		
-655	Upper Indiranagar		
-656	Chintamani Nagar		
-657	Lower Indiranagar		
-658	Bibwewadi		
-659	Kothari Corner		
-660	Vasant Bag		
-661	Pushp Mangal karyalaya		
-662	Petrol Pump Rajendranagar		
-663	Lokmanya nagar 		
-664	Ganjwewadi 		
-665	Alka talkies 		
-666	Surgeon quarters		
-667	Amunition factory road		
-668	Khadaki bajar		
-669	Kirloskar Oil Engine Manaji Bag		
-670	Buddha Vihar		
-671	Shivaji putala dapodi		
-672	Mantri Niketan Dapodi		
-673	Ramkrushna Mangal Karyalaya		
-674	Suvarna park		
-675	Panyachi Taki Pimple Gurav		
-676	Pimple gurav		
-677	Kumbare Park		
-678	Guruganesh Nagar		
-679	Ashish Garden		
-680	Mahesh Vidyalaya		
-681	Sahajanand Soc		
-682	Gandhibhavan Andhshala		
-683	Tata gaurdroom Kharadi phata		
-684	Panyachi Taki Chandannagar		
-685	Salunke hospital		
-686	Sundarbai shala		
-687	Sambhaji chauk Ganesh nagar		
-688	Karehar company		
-689	Raghuveer Nagar		
-690	Paranj company Relax hotel		
-691	Alear weare housing		
-692	Jog Engineering		
-693	Vishnu Udyog		
-694	Sainathnagar Mundhava		
-695	Pratik nagar		
-696	Mail Dagad Kramank 8		
-697	Rajwade banglaow		
-698	Dagade wasti		
-699	Bhagwat wasti		
-700	Deshmukh wasti		
-701	Mariaai Mandir Bhugaon		
-702	Daulat Garden		
-703	Bhugoan		
-704	Chukate wasti		
-705	Mathalwadi		
-706	Tangde Bandhu Mala		
-707	Mail Dagad Kramank 18		
-708	Nerolac Paint Company		
-709	Bhukoom Ashram		
-710	Bandal farm		
-711	Ashram		
-712	Mail dagad kramank 21		
-713	Mail Dagad Kramank 22		
-714	Lavale Phata		
-715	ST stand pirangut		
-716	Vishkar India company		
-717	Ghotawale phata		
-718	Stage no.6		
-719	Stage no.7		
-720	Kopo Phata Bormal		
-721	Poolachi wadi		
-722	Shivregoan Phata		
-723	Pravin Masala Company		
-724	Ashok Layland		
-725	Warje Gaon Nasrapur Road		
-726	Kalubai Jog Mandir		
-727	Shivanand Enclave Company		
-728	Kalewadigaon phata		
-729	Sangvi Company		
-730	Dalvi wasti		
-731	Nasrapur ST Stand		
-732	Bhairoba Mandir Nasarapur		
-733	juna pul gate		
-734	Mahatma gandhi stand		
-735	Race course		
-736	Bhauraba nala		
-737	Fatimanagar		
-738	Shivarkar Garden		
-739	Jambhulkar Chauk 		
-740	Jagtap chauk		
-741	Kedarinagar 		
-742	Kedari corner 		
-743	Kedari Nagar		
-744	Salunke Vihar		
-745	Azadnagar		
-746	Heaven Park		
-747	Lakshmimata Mandir Mohammadwadi		
-748	Fatimanagar Municipal shala		
-749	New hind school		
-750	Juna motor stand		
-751	Kashiwadi 		
-752	Ramoshi gate		
-753	A D camp chauk		
-754	Nana peth		
-755	Alpana Talkies		
-756	Sonya Maruti Chowk		
-757	City post		
-758	Vanaz company		
-759	Mauli bangala		
-760	Maharshi nagar		
-761	Sant namdeo vidyalay		
-762	P and T colony		
-763	Bank of maharashtra		
-764	COD office		
-765	Poona club		
-766	Council Hall		
-767	Income tax office		
-768	Sainikwadi		
-769	Matchwel company		
-770	Datta mandir Wadgaon sheri		
-771	Wadgao sheri		
-772	Jayprakash Stand Pune station		
-773	Neeta park		
-774	Gunjan Theature		
-775	White House		
-776	Netaji school		
-777	Vikrikar Karyalaya		
-778	Yerwada post office		
-779	Nagpur chawl		
-780	Guardroom gate		
-781	Sanjay park		
-782	Five nine area		
-783	Burmashell		
-784	Kalwad		
-785	Officers mess		
-786	Central school khese		
-787	Water tank		
-788	Jakat Naka Khese Ali		
-789	Balaji super market		
-790	Kirti Grapes		
-791	Khandave Bungalow		
-792	Atma Anand Dhyan Kendra		
-793	Shinde wasti lohgoan		
-794	Kakde Vasti Lohgaon		
-795	Lakshmi Provision Stores		
-796	Patil Wasti Wadgaon Shinde		
-797	Zila Parishad School		
-798	Wadgaon Shinde		
-799	Green Oaks Company		
-800	Mangesh nagar		
-801	Vimannagar Gate		
-802	Konark Nagar Corner		
-803	Konark Nagar		
-804	Gangapuram Mhada		
-805	Dehugaon		
-806	Dehugaon Grampanchayat		
-807	Malwadi Dehu		
-808	Kudba Kruti Manmohan		
-809	Zhende mala		
-810	COD corner		
-811	Paduka Mandir		
-812	Chincholi		
-813	Ashoknagar Dehuroad		
-814	Dehu road railway station		
-815	Garden City		
-816	Kendriya Vidyalaya		
-817	B Sub Depot		
-818	Kohima Line		
-819	Cantonment Jakat Naka		
-820	Bank of badoda		
-821	Green ekars		
-822	Badade wasti		
-823	Chaudhari wasti		
-824	Sortapwadi		
-825	Rajendra pipe company		
-826	Inamdar Wasti 		
-827	Bhosale Wasti 		
-828	Prayag Dham Phata 		
-829	Urali Kanchan		
-830	Nagarroad Phata Shriramnagar		
-831	Naik bungalow		
-832	Janakbaba Darga		
-833	Ramnarayan Bungalow		
-834	Lieson company		
-835	Satav High School		
-836	Wagholi		
-837	Kesanand phata		
-838	Pacharne wasti		
-839	Bharti Jain Sanghatna College		
-840	Jagtap Dairy Lonikand		
-841	Lonikand		
-842	Phulgaon Phata		
-843	Power House Phulgaon		
-844	Mail Dagad Kramank 23		
-845	Perne Phata		
-846	Walke Wasti		
-847	Perne Gaon		
-848	Kadam Wasti		
-849	Dongergaon Phata		
-850	Shinde Wasti 		
-851	Bapurao Smarak		
-852	Dabhade Wasti		
-853	Gaikwad Wasti		
-854	Shinde Wasti Burkegaon		
-855	Harpale wasti Burkegaon		
-856	Pimpri Saandas		
-857	Shitole mala		
-858	Nhavi Sandas		
-859	Lakshmi narayan theature		
-860	Mehandale Guarage		
-861	Date Engineering		
-862	Bhim Jyoti Soc.		
-863	Karnataka High school		
-864	Alankar Police Chowki		
-865	Nav Sahyadri Sabhagruha		
-866	Madhusanchay Society		
-867	Vitthal Mandir Karvenagar		
-868	Shriman Society		
-869	Sahvas Soc		
-870	Warje Malwadi		
-871	Shivane Gaon		
-872	Ingale Colony		
-873	Ahire gate phata		
-874	Uttamnagar		
-875	Kondhava Dhavde		
-876	NDA gate Kondhva Gate		
-877	Dnyaneshwar paduka chauk		
-878	Lakaki Bungalow		
-879	Model colony		
-880	Deep Bungalow Chowk		
-881	Kusalkar Putala		
-882	Janwadi		
-883	Maharashtra Housing Niljyoti		
-884	Pimpri Manapa		
-885	Link road		
-886	Manik Colony		
-887	Darshan hall		
-888	Chinchwade Nagar Corner Chinchwad Road		
-889	Chinchwade Farm		
-890	Aher garden		
-891	Walhekarwadi		
-892	Matoshri nagar		
-893	D.Y.Patil corner		
-894	D Y Patil college Akrdi		
-895	D Y Patil Chowk		
-896	Gurudwara Chowk		
-897	Mimli Garden		
-898	Atharva Park		
-899	Chintamani Chowk		
-900	Polcompany		
-901	Waghmare wasti		
-902	Phadtare Wasti		
-903	Industrial Company		
-904	Z F Stearing Company		
-905	Vishrant Dham		
-906	Wadhu Bu		
-907	Bhandari nivas		
-908	Chaudhri Vasti		
-909	Bhosale Vasti		
-910	Wajewadi Chaufula		
-911	Karandi Phata		
-912	Panyachi Taki Karandi		
-913	Karandigaon kaman		
-914	Karandi gaon		
-915	Vikasnagar Corner		
-916	Maruti Mandir Wakad		
-917	Kaspate Vasti		
-918	Wakad Chowk		
-919	A B Chauk Stand		
-920	Mhaske wasti		
-921	Kalasgaon		
-922	R D colony		
-923	512 Factory Gate 		
-924	MSEB Khadki 		
-925	Factory Hospital		
-926	Khadki Police Station		
-927	Khadaki station corner		
-928	Botanical garden		
-929	Spicer College Press		
-930	Spicer college		
-931	Rakshak Soc.		
-932	Pimple Nilakh Shala		
-933	Pimple Nilakh		
-934	Dapodi Gaon		
-935	S T Workshop		
-936	P W D Gate		
-937	panyachi takai sangvi		
-938	Bara gholap		
-939	Shivar Chowk		
-940	Sindhu Park		
-941	Rahatani gaon		
-942	Ramnagar rahatani		
-943	akate wasti		
-944	Saurabh company tambe company		
-945	Rahatani phata		
-946	Shrinagar		
-947	Dhangar Nagar Kalewadi		
-948	Tapgir nagar		
-949	M M shala		
-950	Avinash Mangal Karyalaya		
-951	Dhangar nagar kalewadi		
-952	Vijaynagar		
-953	Ingale hospital		
-954	Krushnamandir Corner		
-955	Maharashtra chauk		
-956	Hutatma chauk		
-957	Shatri chauk		
-958	Durwankur lawns		
-959	Dighi Corner Odha		
-960	Tata stores		
-961	Bhosari phata		
-962	Moje vidyalaya		
-963	Sai madnir		
-964	Nirma company		
-965	Gokhale Mala Sankalpa Garden		
-966	Wadmukhwadi		
-967	Chincheche jhad		
-968	Charholi phata		
-969	Sai Lila nagar Kate Wasti		
-970	Moshi Phata Dehu Phata		
-971	Alandi bus stand		
-972	Sadhu wasvani chauk		
-973	General post office		
-974	Sarabatwala chowk		
-975	Sachapeer Street		
-976	Modern Bakery Nana peth		
-977	Warje Gaon Highway		
-978	Electronic sadan		
-979	Century company		
-980	Indrayani nagar corner		
-981	Power house bhosari		
-982	Gavalimatha		
-983	Yashwant nagar telco road		
-984	Telco hostel		
-985	Telco company		
-986	KSB Chowk		
-987	Sanghavi College		
-988	Morwadi Phata		
-989	Mohan Nagar		
-990	MIDC Chinchwad		
-991	Lokmanya Hospital		
-992	Prekshagruha		
-993	Elpro Company		
-994	Narayan peth police chowky		
-995	Raman bag		
-996	Kesari Wada		
-997	Ramanbag		
-998	Somanagar Society		
-999	Sukhsagar Nagar		
-1000	Khandoba Mandir Corner		
-1001	Ladies Hostel 		
-1002	Shri Shatrunjay Jain Temple		
-1003	Hill Villa		
-1004	Smashanbhumi Kondhava		
-1005	Khadi Machine		
-1006	Somaji Khat Karkhana		
-1007	Talab Farm		
-1008	Mangalben company Sai service		
-1009	Chaitanya Vidyalaya 		
-1010	Kondhva Khurd		
-1011	Kondhava Shala		
-1012	NIBM Road		
-1013	Mahatma Phule wasahat		
-1014	Indiranagar 		
-1015	Kalubai mandir		
-1016	Airport		
-1017	Nagpur Chawl		
-1018	Vikrikar karyalaya		
-1019	Bombay garaje		
-1020	PMC School Pimpri		
-1021	Transport Nagari		
-1022	Appu Ghar		
-1023	Mukbadhir shala		
-1024	Big India		
-1025	Sindhunagar Corner		
-1026	Geetabhavan		
-1027	Ashoka		
-1028	Mhalsakant Chowk		
-1029	Ganganagar		
-1030	Giriraj Corner		
-1031	Prachi		
-1032	Akurdi rly stn		
-1033	Akurdi Police Chowky		
-1034	Sambhaji chowk		
-1035	Patil chauk		
-1036	Railway quarters		
-1037	Bijlinagar		
-1038	Chinchwade Nagar Corner Akurdi Road		
-1039	Chaitanya sabhagruha		
-1040	Om Sairam complex		
-1041	KSB chauk		
-1042	Power house Bhosari		
-1043	Indrayani nagar Corner		
-1044	Century Company		
-1045	Electronic Sadan		
-1046	Mahila Mandal		
-1047	Sangam Metal Company		
-1048	Kanda Engineering Company		
-1049	Power House Ghotawade		
-1050	Bhar Phata		
-1051	Alfa paper mill		
-1052	Hanuman chowk		
-1053	SNZ chemical company		
-1054	Ghotawade gaon		
-1055	Green Park hotel		
-1056	Trimurti bunglow		
-1057	Ambedkar nagar		
-1058	Murkute wasti		
-1059	Baner gaon		
-1060	Baner odha		
-1061	Balewadi Phata		
-1062	Kalamkar wasti		
-1063	Samadhi mandir		
-1064	Insureance company		
-1065	Mhalunge Gaon		
-1066	Gokhalenagar shala		
-1067	Gokhalenagar		
-1068	Police line Gokhalenagar		
-1069	Padmavati Bus stand		
-1070	Power house Padmavati		
-1071	Date Bus stop		
-1072	Nandadeep		
-1073	Gandhi Training Corner		
-1074	Laxminagar police chauki		
-1075	Canbay Corner		
-1076	Alhat wasti		
-1077	Magar College		
-1078	Mahadeo nagar		
-1079	Ghule wasti		
-1080	Dhere bangala		
-1081	Gopal Patti		
-1082	Railway crossing		
-1083	Rangicha wada		
-1084	Belhekar wasti		
-1085	Malwadi		
-1086	Manjri bu.		
-1087	Maruti mandir ves		
-1088	Annasaheb magar vidya mandir		
-1089	Manjari Khurda Avhalwadi Phata		
-1090	Zila Parishad		
-1091	Phadake Houd		
-1092	Dattawadi pul		
-1093	Mhasoba Chowk		
-1094	Raksha Lekha Society		
-1095	Jal shudhikaran kendra singhroad rd		
-1096	Vitbhatti singhgad rd		
-1097	Vitthalwadi Jakat Naka		
-1098	Jaydeo nagar		
-1099	RajaramPool		
-1100	Vitthalwadi mandir hingne		
-1101	Shivpushpak park		
-1102	Star garden		
-1103	Krushna mandir		
-1104	Suncity		
-1105	Tilekar wasti		
-1106	Magarpatta school		
-1107	Megarpatta City		
-1108	Bapusaheb Magar wasti		
-1109	Keertane Bag		
-1110	Dhamale wasti Mundhva		
-1111	Mundhva Gaon		
-1112	Mundhava Gaon Corner		
-1113	Diamond watch Company		
-1114	Kachare wasti		
-1115	Tadi Gupta Wanaspati Sanshodhan Kendra		
-1116	Farashi Karkhana		
-1117	Pingale wasti		
-1118	Army college		
-1119	Family Camp		
-1120	Dhankawadi		
-1121	Pratibhanagar		
-1122	Gulabnagar		
-1123	Police Line Modern College		
-1124	Shubham Hotel		
-1125	Ahilyadevi Shala		
-1126	Surya hopsital		
-1127	Pawale chauk		
-1128	Kamala nehru hospital		
-1129	Sadanand nagar		
-1130	Khadaki police station		
-1131	Suply depot		
-1132	Mantri niketan Dapodi		
-1133	Shitaladevi Mandir 		
-1134	Raviraj Hotel		
-1135	Pooja hospital		
-1136	ST Stand Gram Panchayat Talegaon		
-1137	Talegao Dhamdhere Bazar		
-1138	Bhairoba Nagar		
-1139	LakshmiBai Mandir		
-1140	ST Stand Chakan Road		
-1141	Shikrapur Phata		
-1142	Jakate wasti		
-1143	Sanaswadi		
-1144	Darekar Wasti		
-1145	Ekora Company Kalyani Forbes		
-1146	Bafna Industries		
-1147	Koregaon Bhima		
-1148	Phulgaon phata		
-1149	Satva high school		
-1150	Lieson Company		
-1151	Naik Bungalow		
-1152	NEI company		
-1153	Chandan nagar		
-1154	Dharmanagar 5 va mail		
-1155	Ramwadi jakatnaka		
-1156	Wadia bunglow		
-1157	Lakud Bajar 		
-1158	Sonwane hospital		
-1159	Subhanshah Darga		
-1160	Panyachi taki		
-1161	Sai chauk		
-1162	Krishna bajar		
-1163	Katepuram		
-1164	New pmc school		
-1165	Dehu phata		
-1166	Sai lila nagar kate wasti		
-1167	Gokhale mala sankalp garden		
-1168	Sai mandir		
-1169	Tata Stores		
-1170	Didhi corner odha		
-1171	Durvankur Lawns		
-1172	Shastri chowk		
-1173	Maharashtra Chowk		
-1174	Chh.Shivaji krida sankul		
-1175	Officers Mess		
-1176	Central building 		
-1177	kalasgaon		
-1178	Parade ground		
-1179	Wireless colony		
-1180	AIT college		
-1181	Dighigaon		
-1182	Mitra sahakar nagar		
-1183	Dattanagar		
-1184	Telco godown		
-1185	Alandi jakat naka		
-1186	Navin ST stand		
-1187	Dnyaneshwar Bhint		
-1188	Ganga Dham		
-1189	Canol Jhopadpatti		
-1190	Apsara Talkies		
-1191	Power house		
-1192	Mitra sahkar nagar		
-1193	Kiwale		
-1194	Shelke wasti		
-1195	Adarshnagar Corner		
-1196	Kivale phata		
-1197	Indraprabha mamurdi		
-1198	Petrol pump vikasnagar		
-1199	Medical shop		
-1200	Vikasnagar		
-1201	Shankar mandir		
-1202	MIDC bhosari		
-1203	Wakhar mahamandal bhosari		
-1204	Tan protex		
-1205	Juna jakat naka		
-1206	Borate Vasti		
-1207	Bankar wasti moshi		
-1208	Moshi Phata Chimbli Phata		
-1209	Chakan market yard		
-1210	Protact Company		
-1211	Waki Khurda		
-1212	Rohakal Phata		
-1213	Bham		
-1214	Waki Budruk		
-1215	Khadi Machine Chakan		
-1216	Shiroli Phata		
-1217	Bhandari Company		
-1218	Kanda Lasoon Sanshodhan Kendra		
-1219	Kadus Phata		
-1220	Rajgurunagar Vidyalaya		
-1221	Rajgurunagar Khed		
-1222	Minilek company		
-1223	Kirloskar		
-1224	GAF Filters		
-1225	Khale banglaow		
-1226	Urawade gaon		
-1227	Ambegaon Phata		
-1228	Lalghar		
-1229	Datta Mandir Marnewadi		
-1230	Marnewadi		
-1231	Talemala		
-1232	Shivnarwadi		
-1233	Mordari phata		
-1234	Vitbhatti Kalyangaon		
-1235	Bhilarwadi chauk		
-1236	Kalyangaon		
-1237	Mahadeo mandir		
-1238	Mehendale garage		
-1239	Shridhar Colony		
-1240	Daruwala Pool		
-1241	Petrol pump rajendranagar		
-1242	Ghorpadi Peth Colony		
-1243	Swargate police line		
-1244	Zila Parishad School Yewlewadi		
-1245	Kondhava Hospital		
-1246	Lonkar Wasti		
-1247	Surya Kiran Khat Karkhana		
-1248	Shri Shatrunjay jain temple		
-1249	Gokulnagar Katraj		
-1250	Sundarban		
-1251	Sudarshan nagar Katraj		
-1252	Rajas Soc. Corner		
-1253	Dhayarai gaon		
-1254	Dhayarigaon shala		
-1255	Chavan mala		
-1256	DSK Vishwa		
-1257	Masulkar Colony		
-1258	Ajmer school		
-1259	Vitthalwadi Mandir Masulkar		
-1260	Wastu Udyog		
-1261	Shindewadi Ghotawale		
-1262	Kasar amboli		
-1263	Cable company		
-1264	Sutarwadi paudroad		
-1265	Nursery		
-1266	Amralewadi phata		
-1267	Mukund shobha udyan dattamandir		
-1268	Sanakata company		
-1269	Santi company		
-1270	Balkavade wasti		
-1271	Vitthalwadi phata		
-1272	Forest Office Road		
-1273	Manik press road		
-1274	ST stand Paudgaon		
-1275	Shaskiya vishramgrah paud road		
-1276	Paudgoan		
-1277	Kekan gas agency		
-1278	Medical Stores		
-1279	Grampanchayat Tingrenagar		
-1280	Vidyanagar Swapnaganga bangalow		
-1281	Pathare Wasti 		
-1282	Balaji Palace 		
-1283	Rakshak Society Kharadi		
-1284	Patil Wasti Kharadi		
-1285	Kharadi Gaon		
-1286	Hirabag		
-1287	Swargate corner		
-1288	Sainathnagar Ashok Hotel 		
-1289	Thiite Vasti  KaluBai Mandir 		
-1290	Infosys Phase 2		
-1291	Hinjewadi Gaon		
-1292	Water Supply Ravet		
-1293	Rawet		
-1294	Dharmaraj Mangal Karyalaya Ravet		
-1295	Poultry farm Indrayani dhaba		
-1296	Power House IT Park		
-1297	Tata Motors IT Park 		
-1298	Circle IT Park		
-1299	Infosys Phase 3 Gawarwadi		
-1300	Paramhansa Corner		
-1301	Vanaz corner		
-1302	Ganesh Chowk		
-1303	Durvankur soc		
-1304	Shivshankar Chowk		
-1305	Rajmudra Soc		
-1306	Devendra Mangal Karyalaya		
-1307	Shagun chauk		
-1308	Karachi chowk		
-1309	Krushnamandir corner		
-1310	Ingale Hospital		
-1311	Avinash mangal karyalay		
-1312	M M Shala		
-1313	Tapkir Nagar		
-1314	Satavwadi		
-1315	Gondhalenagr		
-1316	ADP pune		
-1317	Bhekrai nagar		
-1318	Power House Phursungi		
-1319	Navlakha Godown 		
-1320	Mantar Wadi phata 		
-1321	Uruli Devachi Phata		
-1322	Bhadale Wasti Devachi Uruli 		
-1323	Jalindre Bag 		
-1324	Wadi 10 Mail Phata 		
-1325	Wadaki nala 		
-1326	Rangan Khor 		
-1327	Zendewadi 		
-1328	Jadhavwadi 		
-1329	Kalewadi 		
-1330	Dumewadi 		
-1331	Divegaon phata 		
-1332	Pawarwadi 		
-1333	Kirloskar company		
-1334	Waghere college 		
-1335	Saswad Bus stand 		
-1336	Saswad stand		
-1337	Binawat Township		
-1338	Sasane Hingane township		
-1339	Nirmal Township		
-1340	Ganesh mandir		
-1341	Kaleborate Nagar		
-1342	Jaykara bangalow		
-1343	Film Institute		
-1344	Devpari Maharaj Mandir		
-1345	Thakur Wasti		
-1346	Rechared Company		
-1347	Pawar Wasti		
-1348	Wadgaon Ghenand Shala		
-1349	Ghenand wasti		
-1350	Koyali Phata		
-1351	Chakan Phata		
-1352	Shel Pimpalgaon		
-1353	Rajsthan Hostel		
-1354	Chincholi Phata		
-1355	Mohitewadi		
-1356	Bahulgaon Phata		
-1357	Subhash Vidyalaya		
-1358	Bahulgaon		
-1359	Someshwar Mandir		
-1360	Vitthai mangal karyalaya		
-1361	karan Park		
-1362	Shubham Society 		
-1363	Rakshak Soc. Ganpati mandir		
-1364	Phulenagar Bhosari		
-1365	Eklavya polytechnic College		
-1366	Mahesh vidyalaya		
-1367	Sahitya Parishad Peru Gate		
-1368	Khedshivapur Highschool		
-1369	Pinnac Society		
-1370	Vasundara Lawns		
-1371	Medi point		
-1372	Rupinagar		
-1373	Ankush chauk		
-1374	Ambedkar vasahat		
-1375	Jambhul Wadi		
-1376	Jambhalkar Wasti		
-1377	Pimplekar wasti		
-1378	Datta Mandir		
-1379	Lipanewasti		
-1380	Telco Colony		
-1381	Chakan Oil mill		
-1382	Santoshnagar		
-1383	Sai Industries Company		
-1384	Shivshankar Super market		
-1385	Khadi Machine Gujarwadi		
-1386	Gujarwadi		
-1387	Sarkari Vishram Gruh		
-1388	Saint Janabai hostel		
-1389	Sangamwadi shala		
-1390	Sangamwadi gaon		
-1391	Parvati darshan vasahat		
-1392	Khan Road 		
-1393	Shirke Company		
-1394	NCL market		
-1395	Bavdhan gaon		
-1396	Bavdhan khind		
-1397	Mail Dagad Kramank 9		
-1398	 Mail Dagad Kramank 10		
-1399	Garware Bungalow		
-1400	Pashan Gate		
-1401	Central School NDA		
-1402	Gol Market NDA		
-1403	Ashok Stambha		
-1404	Stadium NDA		
-1405	Servents Quarters		
-1406	D2 Circle		
-1407	Patil Chowk		
-1408	Rama Bistake park		
-1409	Morya Gosavi raj park		
-1410	Rahatani Phata		
-1411	Saurabh company Tambe Shala		
-1412	Nakate wasti		
-1413	Ramnagar rahatni		
-1414	Pimpale Saudagar		
-1415	Shivshakti Mandir		
-1416	Pimple saudagar chauk		
-1417	Swaraj Mazda		
-1418	Sudarshan nagar		
-1419	Bhairavnagar Pimple Gurav		
-1420	Vaiduwasti		
-1421	Phursungi		
-1422	Jai bhavani godown 		
-1423	Harpale wasti 		
-1424	Power house fursungi		
-1425	Bhekarai Nagar		
-1426	ADP hadapasar		
-1427	Gondhalenagar		
-1428	Shivaji nagar S T stand		
-1429	Police Line Padamji		
-1430	Padmji Gate		
-1431	Military Hospital Wanvadi 		
-1432	Wanvadi Corner 		
-1433	Wanvadi Bazar 		
-1434	Netajinagar 		
-1435	Lullanagar		
-1436	Mahatma Phule Vasahat		
-1437	N I B M Road		
-1438	Kondhva Shala		
-1439	Kondhava Khurd		
-1440	Azadnagar Charholi		
-1441	Tapkir Bungalow		
-1442	Dabhade Wasti Charholi		
-1443	Charholi Gaon		
-1444	Vasant talkies		
-1445	Kachara Depot Undri 		
-1446	Queen company 		
-1447	Mayur Mangal Karyalaya		
-1448	Pisoli Gaon 		
-1449	Hanuman Mandir Charminar 		
-1450	Khadi Machine 		
-1451	Mammadevi Chowk		
-1452	Ghule Wasti 		
-1453	Wadachi Wadi		
-1454	Kothrud depot		
-1455	kachra depot		
-1456	PWD gate		
-1457	ST workshop		
-1458	Shivarkar gardan		
-1459	Jagtap chauk 		
-1460	Prasanna Bungalow		
-1461	Ganesh Nagar 		
-1462	Bank of Maharashtra 		
-1463	Natraj Society		
-1464	LIC Corner		
-1465	Yamunanagar corner		
-1466	Yamuna Nagar		
-1467	Jyotiba Nagar		
-1468	Talwade		
-1469	Dehugaon grampanchayat		
-1470	Mhalasakant chauk		
-1471	Sambhaji chauk		
-1472	Akurdi police chauky		
-1473	Lakud Bajar		
-1474	Gul aali		
-1475	Kasture chowk		
-1476	Naik Hospital		
-1477	Shivaji putala Kalubai mandir		
-1478	Phulenagar bhosari		
-1479	Nanekar park		
-1480	Om sairam complex		
-1481	Chaitnya sabhagrah		
-1482	Chinchwade nagar corner Akurdi road		
-1483	Bijali nagar		
-1484	Hinjewadi Police Station		
-1485	Infosys company		
-1486	Wipro company Circle		
-1487	Tulsi Chemical		
-1488	Indrayani nagar Corner Jayanand Road		
-1489	Jayanand Khira		
-1490	Abhi chemicals		
-1491	Vishalnagar C Ward office		
-1492	Jyoti School		
-1493	Star gardan		
-1494	Dnyaneshwar June Nivas/Sai Mandir		
-1495	Vishrantwadi corner		
-1496	Kasturba general hospital		
-1497	Gandhi Acid Company		
-1498	Tingre nagar Shanti nagar		
-1499	Kekan ges agency		
-1500	Smashanbhumi Rasta Hadapsar		
-1501	Sadhana Vidyalaya		
-1502	Sadu nana wasti		
-1503	Vitthalwadi Mandir Sadesataranali		
-1504	Tupe Mala		
-1505	Lukad Wasti		
-1506	Sadesataranali		
-1507	Vidi Kamgar Vasahat		
-1508	Tukaramnagar		
-1509	Vidi Kamgar Vasahat Yerawada		
-1510	Ahilya Society		
-1511	Akshay Sunshri		
-1512	Munjaba Vasti		
-1513	Vaiduvasti		
-1514	Bhairavnagar pimple gurav		
-1515	Swaraj mazda		
-1516	Pimpale Saudagar Chowk		
-1517	Shivshakti mandir		
-1518	Ramchandra Mangal Karyalaya		
-1519	Express highway phata		
-1520	Shirgaon		
-1521	Pashan gaon		
-1522	NIV		
-1523	Sai Chauk		
-1524	Abhinav college		
-1525	Paduka mandir		
-1526	COD Corner		
-1527	Kudba kruti Manmohan		
-1528	Ramanand Mangal Karyalaya		
-1529	Sant Tukaram Mangal Karyalaya		
-1530	Hinjewadi Jakatnaka		
-1531	Shivratn Mangal Karyalaya		
-1532	Jadhav nagar		
-1533	Venutai College		
-1534	Mount Convent School		
-1535	Defence Colony		
-1536	Ankur Bungalow		
-1537	Vivekanand Society		
-1538	Sutar Dawakhana		
-1539	NDA Gate No 10		
-1540	Khadakwasla Dharan Stores		
-1541	Pickock Bay		
-1542	Donger Matha		
-1543	Dhumal Tali		
-1544	Kudje gaon		
-1545	Kudje Stand		
-1546	Agalambe Phata		
-1547	Patvardhan Farm		
-1548	Mandvi Khurd		
-1549	Mandavi Budruk		
-1550	Spedor Country cluB Gate 2		
-1551	Sangrun Phata		
-1552	Sangrun		
-1553	Shastrinagar 		
-1554	Balewadi		
-1555	Ahire phata		
-1556	Ahire gaon		
-1557	Harijan wasti		
-1558	Krishnai water park		
-1559	Golewadi		
-1560	Mandhare wasti pole phata		
-1561	Tilak Bag		
-1562	Sinhgad Payth Aatekar wasti		
-1563	Army College		
-1564	Pingle Wasti		
-1565	Farshi karkhana		
-1566	Kachare Wasti		
-1567	Dimond watch company		
-1568	Mundhava goan corner		
-1569	Mundhava Goan		
-1570	Shinde Mundhava		
-1571	Keshavnagar pul		
-1572	Keshavnagar		
-1573	Idrayani nagar bhosari		
-1574	Samartha Vidyalaya Indrayani Nagar		
-1575	Markal Gaon		
-1576	Indrayani Nadi Pool		
-1577	Tulapur		
-1578	Balsadan		
-1579	Phulgaon		
-1580	Malwadi Phulgaon		
-1581	Sakore Mala		
-1582	Raysoni Farm		
-1583	Kukut Palan Kendra		
-1584	Power House Markal		
-1585	Kate Wasti		
-1586	Rajas Soc.		
-1587	Bhushan Soc		
-1588	Nivedita Jhula Ghar Kirkat wadi		
-1589	Malwadi Kirkat wadi		
-1590	Hagwane Padwal		
-1591	Mal Hagwane wasti		
-1592	Nandoshi Limbache Zad		
-1593	Nandoshi		
-1594	Jivan Shikshan Mandir Wanjal Wadi		
-1595	Sanaswadi Nandoshi		
-1596	Manik colony		
-1597	Link Road		
-1598	Shagun chowk		
-1599	Waghire height		
-1600	Paramhans nagar		
-1601	Bahiratwadi 		
-1602	Raut wasti 		
-1603	Uruli Devachi		
-1604	Sadanand Nagar		
-1605	Dhayreshwar Mandir		
-1606	Sarpodyan Telco Road		
-1607	HDFC corner		
-1608	M23		
-1609	Moze Adhyapak Vidyalaya Yerwada		
-1610	Maharashtra Housing Yerwada		
-1611	Amrai		
-1612	Poultry Farm Aglambe		
-1613	Agalambe Gaon		
-1614	Theurgaon Phata		
-1615	Green Ekers		
-1616	Panale farm		
-1617	Kunjir mala		
-1618	Kunjir vihir		
-1619	Gosavi wasti		
-1620	Power house theur		
-1621	Theur gaon		
-1622	Theur factory		
-1623	Kunjir Wadi Goan 		
-1624	Malwadi Kunjir 		
-1625	Karade Wasti 		
-1626	Chowdhari Bag 		
-1627	Railway gate Mhatobachi alandi		
-1628	Javalkar Hospital		
-1629	Mhatobachi Alandi		
-1630	Damodar nagar		
-1631	Tukai nagar		
-1632	Bhansali complex		
-1633	Chaitanya bangala		
-1634	Chakankar mala		
-1635	Deasi poultry farm		
-1636	Bharat English school		
-1637	Mojhe Vidyalay		
-1638	Master Bakery		
-1639	Khandoba Mandir		
-1640	Kakde Vasti		
-1641	Oswal Estate		
-1642	Aaimata Mandir		
-1643	Employment Office		
-1644	Krushnanagar		
-1645	Power house markal		
-1646	Kukkut palan kendra		
-1647	Raysoni farm		
-1648	Sakore mala		
-1649	Indrayani pul		
-1650	Ganga Village		
-1651	Satav Nagar		
-1652	Sawant College		
-1653	Ramya Nagari		
-1654	Gavane Nagar		
-1655	Handewadi gaon		
-1656	Autadewadi Phata		
-1657	Holkarwadi		
-1658	Dairy farm		
-1659	Kudale farm		
-1660	Punawale corner		
-1661	Pabal Phata		
-1662	Tikone Godown		
-1663	S T Stand Kesnand		
-1664	Dnyaneshwar Paduka Wade Bolhai		
-1665	Highpeek Company		
-1666	Kesnand		
-1667	Dhore Vasti		
-1668	Bagal Vasti		
-1669	Shivneri Poultry Farm		
-1670	Dadegaon Phata		
-1671	Wade Bolhai		
-1672	Shinde wasti		
-1673	KRB Workshop		
-1674	Lonkar wasti		
-1675	Mhasoba wasti		
-1676	Ghavate nagar		
-1677	VSI company		
-1678	Ramchandranagar		
-1679	Chavan Nagar Sambhajinagar		
-1680	Aranyeshwar mandir		
-1681	Santnagar Chowk Taware Colony		
-1682	Shivdarshan Vasahat		
-1683	Gokul Nagar Katraj		
-1684	Gajanan Nagar		
-1685	Transport nagar		
-1686	Mukbadhir Shala		
-1687	Gokul nagar		
-1688	Dhayareshwar Industries		
-1689	Manaji nagar		
-1690	JK Industries		
-1691	Narhe Ambegaon		
-1692	Indira Institute		
-1693	Shirole Petrol Pump		
-1694	Tathawade Phata		
-1695	Vittbhatti XPS Company		
-1696	Pawana pul Rawet		
-1697	Jadhavwadi phata		
-1698	Shamal Rose Nursery		
-1699	Parandhwadi		
-1700	Urse Phata		
-1701	Bebadohal		
-1702	Sadgurunagar		
-1703	Dhavde Vasti		
-1704	Atlas Company		
-1705	Dhavade wasti		
-1706	Spicer college press		
-1707	Botanical Garden		
-1708	40 Aundh Road		
-1709	LIC Colony Khadaki		
-1710	Khadaki Station corner		
-1711	Sambhaji Chowk Ganesh Nagar		
-1712	Shrama Safalya		
-1713	Anandpark Kharadi		
-1714	Abhinav kala vidyalaya		
-1715	Ranware wasti		
-1716	Ravinagar Tapkir wasti		
-1717	Soos gaon		
-1718	Shitole wasti Soos		
-1719	Symbiosis college phata Soos		
-1720	Sanjay Nilgiri Garden Shinde Wast		
-1721	Dhamale wasti Soos road		
-1722	Nandegaon		
-1723	Gaikwad wasti Nandegaon		
-1724	Shitole wasti Nandegaon		
-1725	Gawade wasti		
-1726	Satav wasti		
-1727	Lawale wasti		
-1728	Rautwadi		
-1729	Kasturba School Wadia		
-1730	Kalptaru Society		
-1731	Bhairoba Pumping Station		
-1732	Ghorpadi Phata		
-1733	Gulmohar City Military Stadium		
-1734	Dhole Patil Farm		
-1735	Yashwant Nagar		
-1736	Ashoknagar		
-1737	Rangehill Circle 1		
-1738	Rangehill Circle 2		
-1739	Rangehills H Type Quarters		
-1740	Military Hospital		
-1741	Shantiban		
-1742	Malkhed		
-1743	Wardade phata		
-1744	Wardade		
-1745	Shinde Farm		
-\.
 
 
 --
@@ -15037,10 +13825,2143 @@ SELECT pg_catalog.setval('routes_route_stops_id_seq', 12722, true);
 
 
 --
+-- Data for Name: routes_stop; Type: TABLE DATA; Schema: public; Owner: bususer
+--
+
+COPY routes_stop (id, name, latitude, longitude) FROM stdin;
+1527	Kudba kruti Manmohan	18.5204303	73.8567437
+6	Chorex Company	18.5204303	73.8567437
+7	I B P Pump	18.5343	73.839673
+9	Kharabwadi	18.7642867	73.8360251
+10	Ranubai Mala	18.5204303	73.8567437
+12	Talegaon Phata ST Stand	18.5204303	73.8567437
+13	Petrol Pump	18.414299	73.762883
+14	Alandi Phata	18.731698	73.856187
+16	Gaikwad wasti 	18.53273	73.91821
+18	Hood company	18.5204303	73.8567437
+19	Moshi goan	18.6765	73.849568
+20	Chaudhari dhaba	18.5204303	73.8567437
+21	Bankar Vasti Moshi	18.671378	73.848265
+23	Juna Jakat naka	18.662099	73.848475
+24	Tan Protex	18.5204303	73.8567437
+26	Panjarpol	18.6422569	73.8512792
+27	Sadgurunagar PCMT depot 	18.632208	73.849931
+29	Century Enka Colony 	18.6148921	73.8472361
+30	Landewadi	18.6220387	73.840436
+32	MIDC Bhosari	18.6388707	73.7779386
+33	Bhosari police station	18.617412	73.825929
+35	Kasarwadi	18.6060873	73.8227917
+36	Forbes marshal stop	18.601114	73.826804
+38	Sandwik	18.593351	73.829863
+39	Fugewadi	18.586909	73.833146
+40	Dapodi	18.583816	73.8316141
+42	Bopodi	18.5667907	73.8345548
+43	Khadaki	18.5667	73.8667
+45	Petrol Pump Khadki	18.5667	73.8667
+46	Khadaki church stop	18.558521	73.845195
+47	Khadaki post office	18.555834	73.847379
+49	Krutrim Reshim Paidas Kendra	18.549212	73.8509
+51	Mariaai Gate Old Mumbai Pune Road	18.542177	73.851737
+52	Bajaj showroom	18.539814	73.850922
+53	Labor office	18.534854	73.851396
+54	Patil Estate	18.4410707	73.8237039
+56	Modern Highschool	18.524763	73.849404
+57	PMC	18.522643	73.852949
+58	Pune Station Depot	18.527378	73.87636
+60	Collector kacheri	18.527969	73.874991
+61	Ambedkar bhavan	18.5253	73.867981
+63	Kumbhar wada	18.536592	73.9425951
+64	Shivaji putala pmc	18.526617	73.852559
+66	Masoba gate	18.532468	73.842384
+67	Pumping station	18.5343	73.839673
+68	Pune central	18.534776	73.838998
+70	Rangehills Corner	18.5516908	73.8415604
+71	Rajbhavan	18.5447449	73.8253649
+73	Kasturba vasahat	18.5204303	73.8567437
+75	Bremen chauk	18.559766	73.815308
+76	Body gate	18.563226	73.813331
+77	Aundh gaon	18.5639463	73.8102927
+79	Aundh chest hospital	18.575085	73.805075
+80	Aundh post office	18.5765991	73.8044182
+82	Rakshak chauk	18.5817878	73.7976203
+83	Military Stores	18.5169994	73.8580788
+85	Jagtap Dairy 	18.5751779	73.7924355
+86	Kaspate Vasti 	18.5927957	73.7698492
+88	16 Number 	18.6216754	73.6927378
+89	Laxman nagar	18.5687742	73.7709523
+91	Swargate	18.5004866	73.8668996
+92	Sarasbag	18.503197	73.853717
+94	Shanipar	18.512798	73.852933
+95	A B Chowk	18.5111468	73.8371508
+97	Shaniwar wada	18.5159203	73.8487982
+98	PMC mangala	18.523954	73.85418
+99	Shivaji nagar ST Stand	18.532448	73.849456
+101	Balgandharv sambhaji par	18.5204303	73.8567437
+103	Deccan Corner Sambhaji Pul Corner	18.513793	73.841438
+104	Garware college	18.512356	73.838561
+106	Nal Stop	18.509019	73.831963
+107	SNDT college	18.5089382	73.8275705
+109	Maruti mandir karve road	18.503754	73.820291
+110	Karve putala	18.502256	73.816181
+111	Kothrud Stand	18.499756	73.813639
+113	Wadache Jhad Bhairavnath Mandir	18.5204303	73.8567437
+114	Karvenagar	18.4903696	73.8169099
+115	Warje Jakatnaka	18.484655	73.810415
+117	Madiwale colony	18.506133	73.85275
+118	S P college	18.5068061	73.8485225
+120	Sahitya parishad peru gate	18.5204303	73.8567437
+121	Goodluck Chowk 	18.518055	73.84146
+122	F C College	18.516436	73.773213
+124	Lokmangal 	18.530071	73.850827
+125	Labour office	18.534854	73.851396
+127	Mula road bhaiyawadi	18.552049	73.856389
+128	Pachawadw	18.5204303	73.8567437
+129	Holkar Water Supply 	18.5204303	73.8567437
+131	Deccan college 	18.548279	73.871937
+132	Ambedkar Society	18.552213	73.87295
+133	RTO New	18.5204303	73.8567437
+135	MES Water Works	18.5204303	73.8567437
+137	Shantinagar	18.6234735	73.8444793
+138	Sathe Biscuit company	18.570635	73.879023
+139	Vishrantwadi	18.5784956	73.8819676
+141	Bhairavnagar 	18.5821537	73.886745
+142	Gokul Nagar 	18.5877162	73.8885824
+144	Dhanori Gaon	18.596693	73.897405
+145	Lohoan	18.5204303	73.8567437
+147	Katraj dairy Sarpodyan	18.454864	73.858576
+148	Bharti vidyapeeth gate	18.542963	73.828643
+150	Balaji nagar	18.4646316	73.8602841
+151	Vishweshwar Bank KK market	18.468843	73.857517
+152	Padmavati corner	18.5048936	73.862586
+4	Mhalunge Phata	18.5381935	73.7812713
+1529	Sant Tukaram Mangal Karyalaya	18.5119016	73.8545505
+1534	Mount Convent School	18.4821147	73.8874799
+156	Panchami hotel	18.49174	73.857581
+157	Laxmi Narayan Theature	18.5204303	73.8567437
+159	Bhosari Police Station 	18.617412	73.825929
+160	Ambegaon	19.128151	73.697387
+162	Ramnagar Katraj	18.4585107	73.8452604
+163	Dattanagar Katraj	18.4460037	73.8353326
+165	Ganpati mandir	18.562025	73.836551
+166	PICT Bharati vidyapeeth	18.5138275	73.819667
+167	Rajaram Gas agency	18.454604	73.853738
+169	Bhumkar Nagar	18.449303	73.834354
+170	Narhe Gaon	18.4534504	73.8227917
+172	Ajinkyatara	18.4624953	73.832446
+173	Parikh complex	18.5204303	73.8567437
+175	Poultry farm singhgad road	18.5204303	73.8567437
+176	Raykar wasti	18.457172	73.811772
+177	Dhayari Gaon	18.447537	73.810282
+179	Dangat wasti	18.457172	73.811772
+181	Lagad wasti	18.5204303	73.8567437
+182	Mate Pat Sasa company	18.5204303	73.8567437
+183	Nanded Phata	18.454771	73.796711
+185	CWPRS gate no.1	18.5204303	73.8567437
+186	Nandoshi Phata	18.5204303	73.8567437
+188	Khadakwasla Gaon	18.4534504	73.8227917
+190	Marketyard	18.4868701	73.8676347
+191	Wakhar Mahamandal Marketyard	18.5204303	73.8567437
+192	Godown Marketyard	18.489475	73.869728
+194	Mafco Company	18.489535	73.86202
+195	Parvati payatha	18.499338	73.852616
+196	Dandekar pul	18.5010461	73.8485225
+198	Jal Shuddhikarn Kendra Sinhgad Road	18.497971	73.84092
+199	Ganesh mala	18.496415	73.838769
+200	Vitbhatti Sinhgad Road	18.492252	73.834255
+202	Jaydeo nagar 	18.489225	73.830747
+203	Vitthalwadi Mandir Hingne	18.5204303	73.8567437
+204	Hingne rasta	18.4833994	73.8351041
+206	Manik Bag	18.473263	73.821563
+207	Indian hum company	18.5204303	73.8567437
+209	Patil colony	18.5106215	73.8525331
+210	Dhayari phata	18.4484912	73.8154394
+212	IAT Gate Girinagar	18.425764	73.766311
+213	Sant Dharmaji Samadhi	18.5204303	73.8567437
+214	Gorhe Budruk	18.421399	73.756846
+216	Donje Goan Phata	18.5204303	73.8567437
+217	Paygude wasti Donje	18.5204303	73.8567437
+219	Gorhe khurd	18.4083034	73.7507276
+220	Malatwadi	18.5204303	73.8567437
+221	Khanapur	18.4002217	73.7323398
+223	Lalmahal	18.5187204	73.8566546
+224	RCM 	18.5194658	73.8605597
+226	Apolo Talkies	18.519584	73.865154
+227	KEM hospital	18.520198	73.86766
+229	Pune station	18.5287538	73.8731475
+230	Ruby hall	18.533653	73.877391
+232	Blue Diamond hotel	18.5204303	73.8567437
+233	Saint Meera college	18.536501	73.885682
+235	Annadhanya Godam	18.5204303	73.8567437
+236	Bungalow no 105	18.4866252	73.9503603
+238	Kasturba School north lane	18.5399302	73.8908792
+239	Kalyani nagar	18.5481	73.9033
+241	chavan nagar university road	18.544424	73.824065
+242	Sakal nagar	18.5471748	73.8202184
+243	Sindh colony	18.548815	73.813016
+245	Sanewadi	18.5549196	73.805881
+247	ITI parihar Chauk	18.560268	73.809202
+248	Police workshop	18.56133	73.810066
+249	Sangvi Phata	18.572723	73.807171
+250	Nurses Quarters	18.57507	73.808405
+252	Navi Sangvi	18.5811384	73.8155658
+253	Panyachi taki sangvi	18.575547	73.815303
+255	Anand nagar	18.5067346	73.8147042
+256	Sangvi goan	18.5639463	73.8102927
+258	Hadapsar gadital	18.5005778	73.9425951
+259	Hadapsar gaon	18.501672	73.93307
+261	Kanifnath Soc.	18.4954474	73.9322163
+262	Sasane Nagar	18.4945814	73.9315733
+264	sayadnagar	18.4864683	73.9293689
+265	Hari Hareshwar mandir	18.5204303	73.8567437
+266	Wadkar mala 	18.5204303	73.8567437
+267	Tarawade wasti	18.5204303	73.8567437
+269	Mohammadwadi shala	18.5204303	73.8567437
+270	Kadwasti	18.5894857	73.895824
+272	Punekar wasti	18.5204303	73.8567437
+273	Undrigaon 	18.450695	73.915601
+275	Gokhale hall	18.51415	73.849754
+276	Vijay Talkies	18.513845	73.846962
+277	Alka talkies	18.512564	73.843912
+279	Bhandarkar Institute	18.519612	73.830343
+280	Symbiosis college	18.5650686	73.9104599
+282	Vetal Maharaj chauk	18.5204303	73.8567437
+284	ICC bus stop	18.541013	73.830676
+285	Chatushringi payatha	18.5204303	73.8567437
+286	Gents hostel university	18.5204303	73.8567437
+287	Vidyapeeth Press	18.5204303	73.8567437
+289	Sevak Vasaha	18.5204303	73.8567437
+290	Pune University Main Building	18.554298	73.824577
+292	Trimurti garden	18.4661727	73.8172355
+293	Ambegaon Highway	18.4472598	73.8588438
+294	Shubham hotel	18.5204303	73.8567437
+296	Wadgaon bu. Highway	18.481564	73.857141
+297	Daulatnagar Patilbag	18.5204303	73.8567437
+299	Popular Nagar Cipla cancer care entre	18.5204303	73.8567437
+300	Atulnagar gate	18.4871314	73.7960866
+1537	Vivekanand Society	18.5780193	73.8106603
+1540	Khadakwasla Dharan Stores	18.5204303	73.8567437
+303	Raviraj residency	18.5204303	73.8567437
+305	Paranjpe scheme	18.5138284	73.8335899
+307	DSK Toyota Showroom	18.5204303	73.8567437
+308	HRA relance	18.5204303	73.8567437
+309	Sutarwadi	18.5398982	73.7823508
+311	Soos phata	18.5381935	73.7812713
+314	Mhalunge corner	18.5204303	73.8567437
+316	Mutha Pool Balewadi	18.5825868	73.7683784
+317	Wakad Highway	18.592969	73.756649
+318	BU Bhandari Showroom	18.5204303	73.8567437
+319	Wakad Police Chowky	18.586534	73.736266
+321	Dattanagar Chinchwad	18.617458	73.873979
+322	Birla Hospital	18.62579	73.774995
+324	Walhekarwadi phata	18.5204303	73.8567437
+325	Chafekar chauk	18.629408	73.781232
+326	Chinchwad station	18.656994	73.765219
+328	Kalbhor nagar bus stop	18.646916	73.788385
+329	Rustan company	18.648278	73.7872
+331	Bajaj auto	18.653783	73.781962
+332	Pradhikaran Chowk	18.65873	73.777516
+334	Bhakti shakti depot	18.6653249	73.7706765
+335	Chikhali	18.6804895	73.800734
+337	Jadhav wadi phata	18.5204303	73.8567437
+338	Jadhav wadi	18.680733	73.8198508
+339	Ahire wadi	18.549333	73.8239307
+341	Agarwal Container	18.5204303	73.8567437
+342	New Life	18.5020513	73.8723895
+344	Yashwant nagar corner	18.5402962	73.8338086
+345	Swapna nagari	18.6352353	73.8195956
+347	Zero Boys	18.50527	73.8746667
+348	Nehrunagar corner	18.628963	73.819338
+350	Mahesh nagar	18.6269427	73.8204022
+351	YCM	18.620096	73.817734
+353	Vallabhnagar	18.615558	73.815146
+355	Ganpati matha	18.475692	73.795743
+356	Dnanesh society	18.479579	73.7973269
+357	Warje malwadi	18.474689	73.8022046
+359	Warje jakatnaka	18.484655	73.810415
+360	Wadache jhad	18.491529	73.815159
+362	Paud phata dashbhuja mandir	18.5204303	73.8567437
+363	Thergaon phata 	18.617356	73.767218
+365	Pimprigaon	18.6089687	73.8025493
+366	Ashok Talkies	18.614905	73.804088
+367	Jaihind School	18.6174079	73.8010831
+369	Karachi chauk	18.5204303	73.8567437
+370	Lalmandir	18.534269	73.928313
+372	Finolex	18.629379	73.802574
+374	Nehrunagar	18.6329328	73.8209536
+375	Jyoti school	18.6301835	73.8236171
+377	Abhi Chemicals	18.5204303	73.8567437
+378	Jayanand khira	18.5204303	73.8567437
+379	Idrayani nagar corner	18.540509	73.830538
+381	Gavane Vasti 	18.62052	73.849723
+382	PCMT chauk	18.620129	73.85043
+384	Kondhava dhavade	18.4574675	73.7698492
+385	Bhimnagar	18.6691702	73.8521981
+386	Uttamanagar	18.460409	73.772238
+388	Ingale colony	18.465671	73.777036
+389	Deshmukhwadi	18.469156	73.786778
+391	Dudhane wasti	18.471332	73.790372
+392	HM Hostel	18.5204303	73.8567437
+394	LIC Colony Khadki	18.562315	73.833407
+395	40 aundh road	18.562405	73.833546
+397	Bopodi Gaon	18.5639463	73.8102927
+398	Gangaram park	18.5204303	73.8567437
+399	Kirloskar oil engine manaji bag	18.569811	73.841791
+401	Khadki Bazar	18.5667	73.8667
+402	Lakshi narayan theature	18.5204303	73.8567437
+404	Natu Bag	18.481564	73.857141
+405	More bag	18.4517392	73.8566485
+406	Gujarwadi Phata	18.5204303	73.8567437
+408	Mangdewadi Phata	18.434486	73.85976
+409	Bhilarewadi	18.4222218	73.8610191
+411	Stage kramank 7	18.417774	73.856749
+412	Waghjai Mandir	18.412689	73.858267
+413	Ghat utaar Walan	18.400988	73.857102
+415	Adlar Engineering	18.5204303	73.8567437
+417	Velugoan Phata	18.5204303	73.8567437
+418	Grand Hotel	18.5204303	73.8567437
+420	Kodhanpur Phata	18.347933	73.851646
+421	Oval vasti	18.347754	73.850063
+422	Khed	18.8550308	73.8874991
+423	Shivapur wada	18.340913	73.839067
+425	Gulnur Farm	18.343755	73.834029
+426	Chillal masala company	18.34711	73.829383
+428	Kandhare poultry farm	18.350888	73.813346
+429	Diamond Company	18.350353	73.805555
+431	Bauddha Vasti	18.5204303	73.8567437
+432	Rahatawade Vasti	18.5204303	73.8567437
+434	Newad wasti	18.5204303	73.8567437
+435	Sane wasti	18.5035861	73.9388143
+436	Sane chauk	18.670071	73.798221
+438	Kasturi market	18.664136	73.795072
+439	Ajantha nagar corner	18.664508	73.786573
+440	Thermax	18.6592923	73.7950158
+442	LIC corner	18.5204303	73.8567437
+443	Sweet mart	18.5204303	73.8567437
+445	Jai Hind Vidyalaya	18.5204303	73.8567437
+446	Jakatnaka Pavanapool	18.5204303	73.8567437
+447	Birla hospital	18.62579	73.774995
+449	Deccan corner sambhaji pool	18.513793	73.841438
+450	Paud phata police chauky	18.5069	73.823727
+452	LIC colony	18.562315	73.833407
+302	Wonder funkey	18.5204303	73.8567437
+1544	Kudje gaon	18.5204303	73.8567437
+456	Paramhans corner	18.5204303	73.8567437
+457	Kachara depot	18.507438	73.799911
+459	kothrud depot	18.506696	73.795338
+460	Shinde farm	18.5204303	73.8567437
+462	Shinde Nagar	18.512056	73.782175
+463	Bavdhan goan	18.517183	73.780905
+465	ARDE Colony	18.5204303	73.8567437
+466	Pashan	18.5390917	73.7977928
+467	ARDE bus stop	18.537925	73.802251
+468	IITM	18.5362002	73.805881
+470	NCL	18.5414875	73.8106594
+472	Loyala Highschool	18.5364174	73.8195119
+473	Police head office	18.540574	73.820782
+475	E Square	18.537936	73.834618
+476	Shivaji putala	18.526617	73.852559
+478	Raja Bungalow	18.551905	73.849493
+479	Khadki church stop	18.558521	73.845195
+480	Alfa laval atlas company	18.5204303	73.8567437
+482	Deichi company	18.5204303	73.8567437
+484	Kharalwadi	18.6273149	73.8102927
+485	Pimpri chauk Bus stop	18.626748	73.805523
+486	Premier company	18.635293	73.798276
+487	Cantonment jakat naka	18.571469	73.838028
+489	B sub depot	18.5204303	73.8567437
+490	Kendriya vidyalaya	18.4701033	73.7641497
+492	CISV	18.5204303	73.8567437
+493	Dehu phata highway	18.678599	73.742183
+495	Dehuroad bajar	18.5204303	73.8567437
+496	Gurudwara dehu road	18.6821027	73.7316304
+498	Central Restaurant	18.5204303	73.8567437
+499	Krushna Mandir Dehu Road	18.6821027	73.7316304
+500	Mata Amardevi temple	18.6965913	73.7082882
+502	Shankarwadi	18.5204303	73.8567437
+503	Shelarwadi	18.6739843	73.7433727
+504	Pune poultry farm	18.546806	73.851656
+506	Talegaon Khind	18.5204303	73.8567437
+507	Talegoan phata	18.7155	73.675447
+509	Jijamata chowk Talegaon	18.7167	73.6833
+510	Talegaon nagar parishad	18.5204303	73.8567437
+512	Talegaon station	18.732173	73.669647
+514	Bharat Petrol Pump	18.496749	73.968418
+515	Samartha Vidyalaya Wadgaon Maval	18.7562767	73.456324
+516	Paisa Phand  Kach Karkhana	18.5204303	73.8567437
+518	Jambhe	18.6404818	73.7227774
+519	Jambhe Prathamik Shala	18.5204303	73.8567437
+521	Tajane Vasti	18.5204303	73.8567437
+522	Punavale Corner	18.5204303	73.8567437
+524	Kudale Farm	18.5204303	73.8567437
+525	Tathwade	18.6289	73.7481
+527	Laxman nagar 	18.5687742	73.7709523
+528	Sindh Colony Gate2	18.5204303	73.8567437
+529	Boys Batalian	18.560308	73.815169
+531	RTO wellesley road	18.529805	73.862654
+532	Alankar Talkies	18.528749	73.876116
+533	PMC Mangala	18.523954	73.85418
+535	Guruprasad bangala	18.5204303	73.8567437
+536	Band garden	18.5347267	73.8797127
+537	Yerwada	18.54515	73.884236
+539	Shastri nagar	18.5041381	73.8014693
+540	Agakhan palace	18.554026	73.901998
+542	Ramwadi	18.5566792	73.9094835
+543	Weikfield	18.5586323	73.9108729
+545	WNC Company	18.5204303	73.8567437
+547	Tata Guardroom Kharadi Phata	18.562652	73.927638
+548	Chandan Nagar	18.5472058	73.9403908
+549	NEI Company	18.5204303	73.8567437
+550	Khule Wadi	18.568438	73.934176
+552	Akashwani hadapasar	18.5309093	73.8493495
+554	Laxmideep colony	18.4971364	73.9569225
+555	Rambag solapur rd	18.5062211	73.9126174
+556	Manjri farm	18.495136	73.979009
+558	Krushi mahavidyalaya	18.5204303	73.8567437
+559	Kavadi pat	18.492034	74.000583
+560	Kavadi rasta	18.5204303	73.8567437
+562	Fuel depot	18.5204303	73.8567437
+563	Kadam wasti	18.7277318	73.6544392
+565	Loni phata	18.488876	74.027791
+566	Ramkrushna rasayan karkhana	18.5204303	73.8567437
+567	Malyacha mala	18.5204303	73.8567437
+569	Tamnya wasti	18.5204303	73.8567437
+570	Theur phata	18.488674	74.051714
+572	Tendulkar wasti	18.5204303	73.8567437
+573	Kunjirwadi	18.4850053	74.0711359
+575	Railway gate no.1 	18.5287449	73.8966848
+576	Chaufula 	18.5204303	73.8567437
+578	Malwadi Naygaon 	18.4909003	74.1017673
+579	Naygoan 	18.5100809	74.0946311
+581	Prayagdham Ashram 	18.5204303	73.8567437
+582	Prayagdham Hospital	18.5063383	74.1088128
+584	Railway Gate Aata Mill Karkhana 	18.5204303	73.8567437
+585	Bagade wasti 	18.5204303	73.8567437
+587	Sahakar Nagar	18.4768152	73.855506
+588	Kranti Society	18.4844946	73.8444793
+589	Sarang Society	18.489427	73.84986
+591	Bank of Maharashtra Parvati gaon	18.4738711	73.825319
+592	Mitramandal Sabhagruh	18.5204303	73.8567437
+594	S T Divisional office	18.5312837	73.8478869
+595	Meera society	18.5004785	73.8709424
+596	Golibar maidan	18.50242	73.87717
+598	Bombay Garage	18.513113	73.879872
+599	West end talkies	18.518774	73.878038
+601	Ruston Company	18.5204303	73.8567437
+602	Kalbhor nahar bus stop	18.646916	73.788385
+1547	Patvardhan Farm	18.5204303	73.8567437
+1745	Shinde Farm	18.5204303	73.8567437
+606	Supply Depot	18.565143	73.850239
+608	Mathyadist Church	18.5583604	73.8546091
+609	Shadal baba Darga 	18.544183	73.878067
+610	Jahangir Hospital	18.5303557	73.8766965
+612	Shivteerthnagar	18.6084294	73.779777
+614	Paudphata police chowky	18.5069	73.823727
+615	Nal stop	18.509019	73.831963
+616	Petrol pump karve road	18.510551	73.834878
+618	Chitrashala	18.512899	73.844905
+619	Sadashiv Peth Houd	18.5082981	73.844732
+620	Gadikhana	18.511898	73.85786
+622	Mamledar kacheri	18.506757	73.858026
+623	Gokul bhavan	18.504163	73.853548
+625	Shanipar Bus Stand	18.512798	73.852933
+626	Sambhaji Nagar	18.450434	73.8874799
+628	Raja Bahadur mill	18.529991	73.86862
+629	Rajaram pul	18.490968	73.827049
+631	Magarpatta	18.502839	73.926607
+632	Gurushankar math	18.5204303	73.8567437
+634	Ram tekadi	18.5019303	73.92496
+636	Bhatnagar 	18.477816	73.8975826
+637	Uday Bag 	18.511795	73.9058534
+638	Sopan Bag 	18.5144365	73.8998307
+640	Kawade Nagar 	18.585787	73.812963
+641	Kalashankar	18.519537	73.906534
+642	Vatare mala	18.524484	73.906355
+643	Shirke Company 	18.528565	73.906239
+645	Ghorpadi Shala	18.5229255	73.8677464
+647	Milletory Depo Mitti Ghar	18.518932	73.882399
+648	Family camp	18.523308	73.88665
+649	Khan Road	18.519151	73.879542
+651	Vishrambag wada	18.513657	73.852659
+652	Phadake Haud	18.5204303	73.8567437
+654	Rajiv Gandhi Nagar Upper Depot	18.5204303	73.8567437
+655	Upper Indiranagar	18.467767	73.8632243
+657	Lower Indiranagar	18.468755	73.864166
+658	Bibwewadi	18.4703742	73.8683697
+660	Vasant Bag	18.4817828	73.8588139
+661	Pushp Mangal karyalaya	18.486623	73.858156
+663	Lokmanya nagar 	18.5066779	73.8470523
+664	Ganjwewadi 	18.5925785	73.7183639
+665	Alka talkies 	18.512564	73.843912
+667	Amunition factory road	18.5204303	73.8567437
+668	Khadaki bajar	18.5667	73.8667
+670	Buddha Vihar	18.574512	73.832549
+671	Shivaji putala dapodi	18.576109	73.830723
+672	Mantri Niketan Dapodi	18.5801598	73.8304653
+674	Suvarna park	18.591203	73.81961
+675	Panyachi Taki Pimple Gurav	18.575547	73.815303
+676	Pimple gurav	18.5867193	73.8154394
+678	Guruganesh Nagar	18.5041413	73.7994473
+679	Ashish Garden	18.502481	73.801544
+681	Sahajanand Soc	18.496374	73.802072
+682	Gandhibhavan Andhshala	18.5204303	73.8567437
+684	Panyachi Taki Chandannagar	18.5204303	73.8567437
+685	Salunke hospital	18.4940191	73.8257325
+686	Sundarbai shala	18.5204303	73.8567437
+688	Karehar company	18.5204303	73.8567437
+689	Raghuveer Nagar	18.551136	73.928983
+691	Alear weare housing	18.5204303	73.8567437
+692	Jog Engineering	18.5204303	73.8567437
+693	Vishnu Udyog	18.5204303	73.8567437
+695	Pratik nagar	18.558549	73.9341451
+696	Mail Dagad Kramank 8	18.506894	73.783031
+697	Rajwade banglaow	18.507534	73.778459
+699	Bhagwat wasti	18.5291664	73.83884
+700	Deshmukh wasti	18.506844	73.768379
+702	Daulat Garden	18.503208	73.760955
+703	Bhugoan	18.50153	73.758089
+704	Chukate wasti	18.5204303	73.8567437
+706	Tangde Bandhu Mala	18.5204303	73.8567437
+707	Mail Dagad Kramank 18	18.5204303	73.8567437
+709	Bhukoom Ashram	18.498163	73.714696
+710	Bandal farm	18.498453	73.719136
+711	Ashram	18.498163	73.714696
+713	Mail Dagad Kramank 22	18.510945	73.694872
+714	Lavale Phata	18.510205	73.689359
+715	ST stand pirangut	18.51294	73.678408
+717	Ghotawale phata	18.512912	73.677791
+718	Stage no.6	18.5204303	73.8567437
+720	Kopo Phata Bormal	18.5204303	73.8567437
+721	Poolachi wadi	18.5204303	73.8567437
+723	Pravin Masala Company	18.5204303	73.8567437
+724	Ashok Layland	18.5204303	73.8567437
+726	Kalubai Jog Mandir	18.5204303	73.8567437
+727	Shivanand Enclave Company	18.5204303	73.8567437
+728	Kalewadigaon phata	18.603829	73.776539
+730	Dalvi wasti	18.258591	73.88531
+731	Nasrapur ST Stand	18.255063	73.883645
+733	juna pul gate	18.50801	73.879397
+734	Mahatma gandhi stand	18.5204303	73.8567437
+735	Race course	18.5102464	73.893373
+737	Fatimanagar	18.5043381	73.9029138
+738	Shivarkar Garden	18.50475	73.901053
+740	Jagtap chauk	18.492024	73.900162
+741	Kedarinagar 	18.4989051	73.9025463
+742	Kedari corner 	18.489398	73.899963
+744	Salunke Vihar	18.4799816	73.9043836
+745	Azadnagar	18.484198	73.905517
+747	Lakshmimata Mandir Mohammadwadi	18.5204303	73.8567437
+749	New hind school	18.5204303	73.8567437
+750	Juna motor stand	18.50921	73.872776
+751	Kashiwadi 	18.507339	73.871168
+1550	Spedor Country cluB Gate 2	18.5204303	73.8567437
+755	Alpana Talkies	18.5204303	73.8567437
+757	City post	18.515744	73.856806
+758	Vanaz company	18.5204303	73.8567437
+760	Maharshi nagar	18.4871425	73.8624893
+761	Sant namdeo vidyalay	18.7461749	73.415765
+763	Bank of maharashtra	18.529951	73.851043
+764	COD office	18.5204303	73.8567437
+766	Council Hall	18.525395	73.878866
+767	Income tax office	18.525762	73.876606
+769	Matchwel company	18.5204303	73.8567437
+770	Datta mandir Wadgaon sheri	18.5454572	73.9221359
+772	Jayprakash Stand Pune station	18.5287538	73.8731475
+773	Neeta park	18.545795	73.887882
+775	White House	18.5072238	73.8566097
+776	Netaji school	18.552009	73.889595
+777	Vikrikar Karyalaya	18.5204303	73.8567437
+779	Nagpur chawl	18.5629104	73.8939134
+780	Guardroom gate	18.5204303	73.8567437
+781	Sanjay park	18.5707263	73.9043836
+783	Burmashell	18.5204303	73.8567437
+784	Kalwad	18.5862229	73.9193407
+786	Central school khese	18.5204303	73.8567437
+787	Water tank	18.5937036	73.9226671
+789	Balaji super market	18.5204303	73.8567437
+790	Kirti Grapes	18.5204303	73.8567437
+792	Atma Anand Dhyan Kendra	18.5204303	73.8567437
+793	Shinde wasti lohgoan	18.6035851	73.9312734
+795	Lakshmi Provision Stores	18.5204303	73.8567437
+796	Patil Wasti Wadgaon Shinde	18.5204303	73.8567437
+797	Zila Parishad School	18.0749064	74.5600592
+799	Green Oaks Company	18.5204303	73.8567437
+800	Mangesh nagar	18.5204303	73.8567437
+802	Konark Nagar Corner	18.5204303	73.8567437
+803	Konark Nagar	18.569903	73.911136
+804	Gangapuram Mhada	18.57266	73.911666
+806	Dehugaon Grampanchayat	18.717599	73.76779
+807	Malwadi Dehu	18.711513	73.760995
+809	Zhende mala	18.5204303	73.8567437
+810	COD corner	18.5204303	73.8567437
+811	Paduka Mandir	18.5245052	73.8414833
+813	Ashoknagar Dehuroad	18.678599	73.742183
+815	Garden City	18.6807904	73.7470502
+816	Kendriya Vidyalaya	18.4701033	73.7641497
+817	B Sub Depot	18.5204303	73.8567437
+818	Kohima Line	18.5204303	73.8567437
+820	Bank of badoda	18.5350453	73.8328087
+821	Green ekars	18.457392	73.804411
+823	Chaudhari wasti	18.4857425	74.1217938
+824	Sortapwadi	18.4770575	74.0960995
+826	Inamdar Wasti 	18.5204303	73.8567437
+827	Bhosale Wasti 	18.5512304	73.7990016
+829	Urali Kanchan	18.4833333	74.1333333
+830	Nagarroad Phata Shriramnagar	18.5204303	73.8567437
+831	Naik bungalow	18.504394	73.8201035
+833	Ramnarayan Bungalow	18.5204303	73.8567437
+834	Lieson company	18.5204303	73.8567437
+836	Wagholi	18.6532361	73.908793
+838	Pacharne wasti	18.5204303	73.8567437
+839	Bharti Jain Sanghatna College	18.5204303	73.8567437
+841	Lonikand	18.6287285	74.0329499
+842	Phulgaon Phata	18.5204303	73.8567437
+844	Mail Dagad Kramank 23	18.5204303	73.8567437
+845	Perne Phata	18.641172	74.050471
+846	Walke Wasti	18.5204303	73.8567437
+847	Perne Gaon	18.5204303	73.8567437
+849	Dongergaon Phata	18.623593	74.073874
+850	Shinde Wasti 	18.6216954	73.9602287
+852	Dabhade Wasti	18.657166	73.899111
+853	Gaikwad Wasti	18.53273	73.91821
+855	Harpale wasti Burkegaon	18.5204303	73.8567437
+856	Pimpri Saandas	18.6095724	74.1284003
+858	Nhavi Sandas	18.6173028	74.1680347
+859	Lakshmi narayan theature	18.5204303	73.8567437
+861	Date Engineering	18.5204303	73.8567437
+862	Bhim Jyoti Soc.	18.5204303	73.8567437
+864	Alankar Police Chowki	18.497925	73.826951
+865	Nav Sahyadri Sabhagruha	18.4954857	73.8291328
+867	Vitthal Mandir Karvenagar	18.509184	73.8460939
+868	Shriman Society	18.5204303	73.8567437
+870	Warje Malwadi	18.474689	73.8022046
+871	Shivane Gaon	18.4558393	73.8209234
+873	Ahire gate phata	18.466865	73.779361
+874	Uttamnagar	18.460409	73.772238
+876	NDA gate Kondhva Gate	18.455919	73.768468
+877	Dnyaneshwar paduka chauk	18.5204303	73.8567437
+879	Model colony	18.5324846	73.8374954
+880	Deep Bungalow Chowk	18.5204303	73.8567437
+882	Janwadi	18.5292326	73.8249973
+883	Maharashtra Housing Niljyoti	18.533155	73.8211231
+884	Pimpri Manapa	18.524614	73.856112
+886	Manik Colony	18.6285832	73.7878659
+887	Darshan hall	18.629409	73.786666
+889	Chinchwade Farm	18.7791889	73.8120389
+890	Aher garden	18.633659	73.764866
+891	Walhekarwadi	18.5204303	73.8567437
+893	D.Y.Patil corner	18.4471665	73.8108211
+895	D Y Patil Chowk	18.534799	73.879601
+896	Gurudwara Chowk	18.645935	73.766419
+897	Mimli Garden	18.5204303	73.8567437
+898	Atharva Park	18.5204303	73.8567437
+900	Polcompany	18.5204303	73.8567437
+901	Waghmare wasti	18.8149596	74.4459679
+903	Industrial Company	18.5204303	73.8567437
+905	Vishrant Dham	18.5204303	73.8567437
+906	Wadhu Bu	18.5204303	73.8567437
+908	Chaudhri Vasti	18.5204303	73.8567437
+909	Bhosale Vasti	18.5512304	73.7990016
+911	Karandi Phata	19.3657748	74.0242213
+912	Panyachi Taki Karandi	18.7277511	74.0608558
+913	Karandigaon kaman	18.5204303	73.8567437
+915	Vikasnagar Corner	18.5175497	73.8659066
+917	Kaspate Vasti	18.5927957	73.7698492
+918	Wakad Chowk	18.608753	73.750792
+919	A B Chauk Stand	18.559766	73.815308
+920	Mhaske wasti	18.5204303	73.8567437
+922	R D colony	18.576733	73.876631
+924	MSEB Khadki 	18.5684078	73.8813484
+925	Factory Hospital	18.559445	73.846395
+927	Khadaki station corner	18.560732	73.841308
+928	Botanical garden	18.565536	73.82446
+929	Spicer College Press	18.5204303	73.8567437
+931	Rakshak Soc.	18.557949	73.896087
+932	Pimple Nilakh Shala	18.5204303	73.8567437
+933	Pimple Nilakh	18.5799471	73.7874983
+935	S T Workshop	19.200565	72.973287
+936	P W D Gate	18.5556776	73.8302905
+938	Bara gholap	18.575605	73.810364
+939	Shivar Chowk	18.595468	73.788428
+940	Sindhu Park	18.6002151	73.7938405
+942	Ramnagar rahatani	18.603268	73.792478
+943	akate wasti	18.5894857	73.895824
+945	Rahatani phata	18.5980935	73.7995844
+946	Shrinagar	18.4208437	73.762495
+948	Tapgir nagar	18.6518817	73.8521981
+949	M M shala	18.526415	73.826976
+951	Dhangar nagar kalewadi	18.6150264	73.7933809
+952	Vijaynagar	18.6338649	73.7334431
+953	Ingale hospital	18.618376	73.792043
+955	Maharashtra chauk	18.5111468	73.8371508
+956	Hutatma chauk	18.5204303	73.8567437
+957	Shatri chauk	18.513673	73.859569
+959	Dighi Corner Odha	18.5204303	73.8567437
+960	Tata stores	18.62682	73.864288
+962	Moje vidyalaya	18.5204303	73.8567437
+963	Sai madnir	18.5823781	73.8127709
+965	Gokhale Mala Sankalpa Garden	18.5204303	73.8567437
+966	Wadmukhwadi	18.653948	73.884116
+968	Charholi phata	18.5204303	73.8567437
+970	Moshi Phata Dehu Phata	18.5204303	73.8567437
+971	Alandi bus stand	18.674405	73.8972404
+972	Sadhu wasvani chauk	18.52504	73.876765
+974	Sarabatwala chowk	18.5204303	73.8567437
+975	Sachapeer Street	18.5150605	73.8764303
+977	Warje Gaon Highway	18.480297	73.805065
+978	Electronic sadan	18.5204303	73.8567437
+980	Indrayani nagar corner	18.540509	73.830538
+981	Power house bhosari	18.631696	73.830628
+982	Gavalimatha	18.638099	73.825105
+984	Telco hostel	18.5204303	73.8567437
+985	Telco company	18.64461	73.81856
+986	KSB Chowk	18.649634	73.809226
+988	Morwadi Phata	18.5204303	73.8567437
+989	Mohan Nagar	18.460262	73.849149
+991	Lokmanya Hospital	18.6572813	73.8002859
+992	Prekshagruha	18.5204303	73.8567437
+994	Narayan peth police chowky	18.516141	73.8479426
+995	Raman bag	18.4962948	73.8437247
+997	Ramanbag	18.4962948	73.8437247
+999	Sukhsagar Nagar	18.4194658	73.8517501
+1000	Khandoba Mandir Corner	18.5204303	73.8567437
+1002	Shri Shatrunjay Jain Temple	18.4516009	73.8781088
+1003	Hill Villa	18.452697	73.883522
+1005	Khadi Machine	18.452978	73.890933
+1006	Somaji Khat Karkhana	18.457239	73.890762
+1007	Talab Farm	18.461244	73.890456
+1009	Chaitanya Vidyalaya 	18.5204303	73.8567437
+1010	Kondhva Khurd	18.4687712	73.8830701
+1011	Kondhava Shala	18.5229255	73.8677464
+1013	Mahatma Phule wasahat	18.622309	73.8460874
+1014	Indiranagar 	18.4697673	73.9319407
+1016	Airport	18.5862229	73.9193407
+1017	Nagpur Chawl	18.5629104	73.8939134
+1019	Bombay garaje	18.513113	73.879872
+1020	PMC School Pimpri	18.5675343	73.8813614
+1022	Appu Ghar	18.6658833	73.7628792
+1023	Mukbadhir shala	18.659358	73.764899
+1024	Big India	18.656994	73.765219
+1026	Geetabhavan	18.5117757	73.8499252
+1027	Ashoka	18.651305	73.77544
+1029	Ganganagar	18.4930796	73.9558204
+1030	Giriraj Corner	18.5204303	73.8567437
+1032	Akurdi rly stn	18.6508219	73.7673837
+1034	Sambhaji chowk	18.5111468	73.8371508
+1035	Patil chauk	18.534799	73.879601
+1036	Railway quarters	18.64629	73.770492
+1038	Chinchwade Nagar Corner Akurdi Road	18.5204303	73.8567437
+1039	Chaitanya sabhagruha	18.4883323	73.8131
+1041	KSB chauk	18.649634	73.809226
+1042	Power house Bhosari	18.631696	73.830628
+1044	Century Company	18.5602954	73.8074237
+1045	Electronic Sadan	18.5204303	73.8567437
+1047	Sangam Metal Company	18.5204303	73.8567437
+1048	Kanda Engineering Company	18.5204303	73.8567437
+1050	Bhar Phata	18.531148	73.669976
+1051	Alfa paper mill	18.5204303	73.8567437
+1052	Hanuman chowk	18.5116908	73.8032241
+1054	Ghotawade gaon	18.5204303	73.8567437
+1055	Green Park hotel	18.5142993	73.8383979
+1057	Ambedkar nagar	18.4599851	73.8896849
+1058	Murkute wasti	18.604093	73.7292051
+1060	Baner odha	18.5204303	73.8567437
+1061	Balewadi Phata	18.563405	73.783134
+1063	Samadhi mandir	19.2760507	73.9817566
+1064	Insureance company	18.5204303	73.8567437
+1066	Gokhalenagar shala	18.526415	73.826976
+1067	Gokhalenagar	18.5285768	73.8257325
+1069	Padmavati Bus stand	18.541845	73.82766
+1070	Power house Padmavati	18.564725	73.850712
+1071	Date Bus stop	18.478792	73.850657
+1072	Nandadeep	18.5246706	73.8278922
+1074	Laxminagar police chauki	18.4947587	73.8545733
+1075	Canbay Corner	18.5204303	73.8567437
+1077	Magar College	18.5083433	73.9546132
+1078	Mahadeo nagar	18.4765985	73.8323492
+1080	Dhere bangala	18.5204303	73.8567437
+1081	Gopal Patti	18.51238	73.967988
+1083	Rangicha wada	18.9833329	73.75
+1084	Belhekar wasti	18.5202253	73.9791012
+1086	Manjri bu.	18.5204303	73.8567437
+1087	Maruti mandir ves	18.5204303	73.8567437
+1089	Manjari Khurda Avhalwadi Phata	18.5204303	73.8567437
+1090	Zila Parishad	18.523561	73.870318
+1091	Phadake Houd	18.518901	73.860125
+1093	Mhasoba Chowk	18.5204303	73.8567437
+1094	Raksha Lekha Society	18.498747	73.838854
+1096	Vitbhatti singhgad rd	18.492252	73.834255
+1097	Vitthalwadi Jakat Naka	18.5204303	73.8567437
+1098	Jaydeo nagar	18.489225	73.830747
+1100	Vitthalwadi mandir hingne	18.5204303	73.8567437
+1101	Shivpushpak park	18.5204303	73.8567437
+1103	Krushna mandir	18.5804018	73.8152709
+1104	Suncity	18.4755434	73.8137402
+1106	Magarpatta school	18.5268905	73.9278113
+1108	Bapusaheb Magar wasti	18.5204303	73.8567437
+1109	Keertane Bag	18.5284964	73.9323081
+1110	Dhamale wasti Mundhva	18.5204303	73.8567437
+1112	Mundhava Gaon Corner	18.533802	73.929892
+1113	Diamond watch Company	18.533852	73.923752
+1115	Tadi Gupta Wanaspati Sanshodhan Kendra	18.5204303	73.8567437
+1116	Farashi Karkhana	18.531281	73.914076
+1118	Army college	18.52964	73.907933
+1119	Family Camp	18.523308	73.88665
+1121	Pratibhanagar	18.4934484	73.9324727
+1122	Gulabnagar	18.4632408	73.8520598
+1124	Shubham Hotel	18.5204303	73.8567437
+1125	Ahilyadevi Shala	18.5204303	73.8567437
+1126	Surya hopsital	18.52159	73.855775
+1127	Pawale chauk	18.5204303	73.8567437
+1129	Sadanand nagar	18.52235	73.865135
+1130	Khadaki police station	18.5571993	73.8453063
+1132	Mantri niketan Dapodi	18.5801598	73.8304653
+1133	Shitaladevi Mandir 	18.5204303	73.8567437
+1136	ST Stand Gram Panchayat Talegaon	18.7167	73.6833
+1137	Talegao Dhamdhere Bazar	18.5204303	73.8567437
+1139	LakshmiBai Mandir	18.5204303	73.8567437
+1140	ST Stand Chakan Road	18.7545716	73.8601774
+1142	Jakate wasti	18.5204303	73.8567437
+1143	Sanaswadi	18.6689214	74.0975678
+1145	Ekora Company Kalyani Forbes	18.5204303	73.8567437
+1146	Bafna Industries	18.5204303	73.8567437
+1148	Phulgaon phata	18.5204303	73.8567437
+1149	Satva high school	18.5204303	73.8567437
+1151	Naik Bungalow	18.504394	73.8201035
+1152	NEI company	18.5204303	73.8567437
+1154	Dharmanagar 5 va mail	18.5204303	73.8567437
+1155	Ramwadi jakatnaka	18.555108	73.905778
+1157	Lakud Bajar 	18.5204303	73.8567437
+1158	Sonwane hospital	18.505563	73.868499
+1160	Panyachi taki	18.575289	73.814975
+1161	Sai chauk	18.543537	73.784902
+1163	Katepuram	18.585788	73.816376
+1164	New pmc school	18.5204303	73.8567437
+1166	Sai lila nagar kate wasti	18.5204303	73.8567437
+1168	Sai mandir	18.5823781	73.8127709
+1169	Tata Stores	18.62682	73.864288
+1170	Didhi corner odha	18.5204303	73.8567437
+1172	Shastri chowk	18.513673	73.859569
+1173	Maharashtra Chowk	18.5111468	73.8371508
+1175	Officers Mess	18.590694	73.91543
+1176	Central building 	18.524298	73.872334
+1177	kalasgaon	18.5204303	73.8567437
+1179	Wireless colony	18.563068	73.8064325
+1180	AIT college	18.607573	73.873364
+1182	Mitra sahakar nagar	18.484678	73.845238
+1183	Dattanagar	18.4458118	73.8466847
+1185	Alandi jakat naka	18.5204303	73.8567437
+1187	Dnyaneshwar Bhint	18.5204303	73.8567437
+1188	Ganga Dham	18.47728	73.873785
+1190	Apsara Talkies	18.499607	73.869439
+1191	Power house	18.564725	73.850712
+1192	Mitra sahkar nagar	18.487765	73.8499576
+1193	Kiwale	18.659071	73.7213063
+1195	Adarshnagar Corner	18.5494576	73.9142357
+1196	Kivale phata	18.5381935	73.7812713
+1198	Petrol pump vikasnagar	18.5204303	73.8567437
+1199	Medical shop	18.5319063	73.8765416
+1201	Shankar mandir	18.5120489	73.8365189
+1202	MIDC bhosari	18.6388707	73.7779386
+1306	Devendra Mangal Karyalaya	18.5204303	73.8567437
+1308	Karachi chowk	18.5204303	73.8567437
+1309	Krushnamandir corner	18.5204303	73.8567437
+1310	Ingale Hospital	18.618376	73.792043
+1312	M M Shala	18.526415	73.826976
+1313	Tapkir Nagar	18.6518817	73.8521981
+1314	Satavwadi	18.4953248	73.9484731
+1316	ADP pune	18.4895498	73.9535244
+1317	Bhekrai nagar	18.5204303	73.8567437
+1319	Navlakha Godown 	18.5204303	73.8567437
+1320	Mantar Wadi phata 	18.5204303	73.8567437
+1321	Uruli Devachi Phata	18.5204303	73.8567437
+1323	Jalindre Bag 	18.5204303	73.8567437
+1324	Wadi 10 Mail Phata 	18.5204303	73.8567437
+1325	Wadaki nala 	18.426759	73.98168
+1326	Rangan Khor 	18.5204303	73.8567437
+1328	Jadhavwadi 	18.7787421	73.7227774
+1329	Kalewadi 	18.6150264	73.7933809
+1330	Dumewadi 	18.5825868	73.7683784
+1332	Pawarwadi 	18.0228123	74.6488264
+1333	Kirloskar company	18.5204303	73.8567437
+1335	Saswad Bus stand 	18.345231	74.031542
+1336	Saswad stand	18.349877	74.028861
+1338	Sasane Hingane township	18.5204303	73.8567437
+1339	Nirmal Township	18.489086	73.93763
+1340	Ganesh mandir	18.57432	73.892871
+1342	Jaykara bangalow	18.5204303	73.8567437
+1343	Film Institute	18.5155604	73.8293919
+1345	Thakur Wasti	18.666096	73.935942
+1346	Rechared Company	18.692664	73.914777
+1347	Pawar Wasti	18.626292	73.751647
+1349	Ghenand wasti	18.698903	73.919908
+1204	Tan protex	18.5204303	73.8567437
+1205	Juna jakat naka	18.662099	73.848475
+1207	Bankar wasti moshi	18.671378	73.848265
+1208	Moshi Phata Chimbli Phata	18.5204303	73.8567437
+1210	Protact Company	18.5204303	73.8567437
+1211	Waki Khurda	18.5204303	73.8567437
+1213	Bham	18.5204303	73.8567437
+1214	Waki Budruk	18.5204303	73.8567437
+1216	Shiroli Phata	18.828936	73.876738
+1217	Bhandari Company	18.5204303	73.8567437
+1219	Kadus Phata	18.5204303	73.8567437
+1220	Rajgurunagar Vidyalaya	18.5204303	73.8567437
+1221	Rajgurunagar Khed	18.8536125	73.88454
+1222	Minilek company	18.500424	73.672534
+1224	GAF Filters	18.5204303	73.8567437
+1226	Urawade gaon	18.5204303	73.8567437
+1227	Ambegaon Phata	18.448084	73.8308919
+1228	Lalghar	18.480925	73.661003
+1230	Marnewadi	18.473479	73.645226
+1231	Talemala	18.5204303	73.8567437
+1233	Mordari phata	18.5204303	73.8567437
+1234	Vitbhatti Kalyangaon	18.5204303	73.8567437
+1236	Kalyangaon	18.5448365	73.7845339
+1237	Mahadeo mandir	18.4853903	73.9397108
+1239	Shridhar Colony	18.487291	73.820816
+1240	Daruwala Pool	18.519931	73.861469
+1242	Ghorpadi Peth Colony	18.5204303	73.8567437
+1243	Swargate police line	18.500523	73.859593
+1245	Kondhava Hospital	18.439256	73.895318
+1246	Lonkar Wasti	18.527644	73.949798
+1247	Surya Kiran Khat Karkhana	18.5204303	73.8567437
+1249	Gokulnagar Katraj	18.4471901	73.874985
+1250	Sundarban	18.448964	73.869846
+1251	Sudarshan nagar Katraj	18.492854	73.8239399
+1253	Dhayarai gaon	18.447537	73.810282
+1254	Dhayarigaon shala	18.5204303	73.8567437
+1256	DSK Vishwa	18.4401119	73.7998149
+1257	Masulkar Colony	18.633612	73.807355
+1258	Ajmer school	18.634152	73.810111
+1260	Wastu Udyog	18.6328814	73.8180835
+1261	Shindewadi Ghotawale	18.512912	73.677791
+1262	Kasar amboli	18.5110959	73.6635544
+1264	Sutarwadi paudroad	18.5204303	73.8567437
+1265	Nursery	18.5647832	73.7799042
+1267	Mukund shobha udyan dattamandir	18.5204303	73.8567437
+1268	Sanakata company	18.5204303	73.8567437
+1270	Balkavade wasti	18.5204303	73.8567437
+1272	Forest Office Road	18.5204303	73.8567437
+1273	Manik press road	18.5204303	73.8567437
+1275	Shaskiya vishramgrah paud road	18.5140297	73.8206202
+1276	Paudgoan	18.523109	73.613664
+1278	Medical Stores	18.509219	73.8126909
+1279	Grampanchayat Tingrenagar	18.5204303	73.8567437
+1281	Pathare Wasti 	18.5599259	73.9334103
+1282	Balaji Palace 	18.5525321	73.9379569
+1284	Patil Wasti Kharadi	18.5705799	73.9461665
+1285	Kharadi Gaon	18.5479754	73.9451957
+1286	Hirabag	18.504506	73.854814
+1288	Sainathnagar Ashok Hotel 	18.5204303	73.8567437
+1289	Thiite Vasti  KaluBai Mandir 	18.5204303	73.8567437
+1291	Hinjewadi Gaon	18.5601154	73.7871306
+1292	Water Supply Ravet	18.6496322	73.7448437
+1293	Rawet	18.6496322	73.7448437
+1295	Poultry farm Indrayani dhaba	18.5204303	73.8567437
+1296	Power House IT Park	18.5204303	73.8567437
+1298	Circle IT Park	18.5204303	73.8567437
+1299	Infosys Phase 3 Gawarwadi	18.5204303	73.8567437
+1301	Vanaz corner	18.50766	73.808069
+1302	Ganesh Chowk	18.5111468	73.8371508
+1303	Durvankur soc	18.49038	73.936074
+1305	Rajmudra Soc	18.5204303	73.8567437
+1350	Koyali Phata	18.5204303	73.8567437
+1351	Chakan Phata	18.734027	73.946583
+1555	Ahire phata	18.466865	73.779361
+1355	Mohitewadi	18.7432296	73.6072583
+1356	Bahulgaon Phata	18.727068	73.998232
+1358	Bahulgaon	18.656031	74.0153231
+1359	Someshwar Mandir	18.670741	73.781198
+1361	karan Park	18.5550453	73.9214504
+1362	Shubham Society 	18.554676	73.919494
+1364	Phulenagar Bhosari	18.622388	73.8238945
+1365	Eklavya polytechnic College	18.5204303	73.8567437
+1366	Mahesh vidyalaya	18.5204303	73.8567437
+1368	Khedshivapur Highschool	18.5204303	73.8567437
+1369	Pinnac Society	18.5204303	73.8567437
+1371	Medi point	18.565025	73.802366
+1372	Rupinagar	18.6799777	73.7867629
+1374	Ambedkar vasahat	18.6720588	73.7827185
+1375	Jambhul Wadi	18.4268492	73.8397009
+1377	Pimplekar wasti	18.5204303	73.8567437
+1378	Datta Mandir	18.561495	73.785635
+1380	Telco Colony	18.435711	73.845259
+1381	Chakan Oil mill	18.43958	73.846932
+1382	Santoshnagar	18.4418674	73.8551385
+1384	Shivshankar Super market	18.440582	73.86607
+1385	Khadi Machine Gujarwadi	18.434502	73.868699
+1386	Gujarwadi	18.426685	73.875557
+1388	Saint Janabai hostel	18.5204303	73.8567437
+1389	Sangamwadi shala	18.5204303	73.8567437
+1391	Parvati darshan vasahat	18.494443	73.85429
+1392	Khan Road 	18.519151	73.879542
+1394	NCL market	18.539926	73.816823
+1395	Bavdhan gaon	18.4462164	73.8256423
+1397	Mail Dagad Kramank 9	18.5204303	73.8567437
+1398	 Mail Dagad Kramank 10	18.5204303	73.8567437
+1400	Pashan Gate	18.5262695	73.7882141
+1401	Central School NDA	18.4595744	73.7610241
+1403	Ashok Stambha	18.5204303	73.8567437
+1404	Stadium NDA	18.4595744	73.7610241
+1405	Servents Quarters	18.5204303	73.8567437
+1407	Patil Chowk	18.534799	73.879601
+1409	Morya Gosavi raj park	18.6204038	73.784419
+1410	Rahatani Phata	18.5980935	73.7995844
+1412	Nakate wasti	18.604815	73.786519
+1413	Ramnagar rahatni	18.603268	73.792478
+1414	Pimpale Saudagar	18.596692	73.7977928
+1416	Pimple saudagar chauk	18.6106899	73.7990755
+1417	Swaraj Mazda	18.5204303	73.8567437
+1418	Sudarshan nagar	18.598397	73.812046
+1420	Vaiduwasti	18.5332247	73.8253649
+1421	Phursungi	18.4726725	73.9784573
+1423	Harpale wasti 	18.5204303	73.8567437
+1424	Power house fursungi	18.476421	73.957156
+1426	ADP hadapasar	18.4895498	73.9535244
+1427	Gondhalenagar	18.494128	73.946694
+1429	Police Line Padamji	18.5204303	73.8567437
+1430	Padmji Gate	18.5109463	73.8747651
+1431	Military Hospital Wanvadi 	18.501818	73.890818
+1432	Wanvadi Corner 	18.499098	73.895513
+1434	Netajinagar 	18.5879955	73.8156232
+1435	Lullanagar	18.4821147	73.8874799
+1437	N I B M Road	18.4702707	73.9001742
+1438	Kondhva Shala	18.5229255	73.8677464
+1440	Azadnagar Charholi	18.5204303	73.8567437
+1441	Tapkir Bungalow	18.5204303	73.8567437
+1443	Charholi Gaon	18.5204303	73.8567437
+1444	Vasant talkies	18.51799	73.856281
+1445	Kachara Depot Undri 	18.463444	73.9212858
+1447	Mayur Mangal Karyalaya	18.5065589	73.8452169
+1448	Pisoli Gaon 	18.450046	73.908893
+1450	Khadi Machine 	18.452978	73.890933
+1451	Mammadevi Chowk	18.5204303	73.8567437
+1452	Ghule Wasti 	18.5095721	73.9591266
+1454	Kothrud depot	18.506696	73.795338
+1455	kachra depot	18.507438	73.799911
+1457	ST workshop	19.200565	72.973287
+1458	Shivarkar gardan	18.50475	73.901053
+1460	Prasanna Bungalow	18.4677915	73.8671293
+1461	Ganesh Nagar 	18.4940191	73.8257325
+1463	Natraj Society	18.494695	73.824595
+1464	LIC Corner	18.5204303	73.8567437
+1465	Yamunanagar corner	18.664508	73.786573
+1467	Jyotiba Nagar	18.6126118	73.7863952
+1468	Talwade	18.7150999	73.7360175
+1470	Mhalasakant chauk	18.6497062	73.7778363
+1471	Sambhaji chauk	18.5111468	73.8371508
+1473	Lakud Bajar	18.5204303	73.8567437
+1474	Gul aali	18.5039377	73.8595928
+1475	Kasture chowk	18.510681	73.862069
+1477	Shivaji putala Kalubai mandir	18.5204303	73.8567437
+1478	Phulenagar bhosari	18.622388	73.8238945
+1480	Om sairam complex	18.6324164	73.7800298
+1481	Chaitnya sabhagrah	18.4883323	73.8131
+1483	Bijali nagar	18.6394732	73.7623111
+1484	Hinjewadi Police Station	18.600026	73.763912
+1485	Infosys company	18.5204303	73.8567437
+1487	Tulsi Chemical	18.507488	73.8487136
+1489	Jayanand Khira	18.5204303	73.8567437
+1490	Abhi chemicals	18.5204303	73.8567437
+1491	Vishalnagar C Ward office	18.5204303	73.8567437
+1492	Jyoti School	18.6301835	73.8236171
+1494	Dnyaneshwar June Nivas/Sai Mandir	18.5204303	73.8567437
+1495	Vishrantwadi corner	18.5204303	73.8567437
+1497	Gandhi Acid Company	18.5204303	73.8567437
+1498	Tingre nagar Shanti nagar	18.567113	73.879489
+1500	Smashanbhumi Rasta Hadapsar	18.502796	73.935062
+1501	Sadhana Vidyalaya	18.505873	73.938856
+1504	Tupe Mala	18.510161	73.94321
+1505	Lukad Wasti	18.512122	73.947284
+1507	Vidi Kamgar Vasahat	18.557215	73.932279
+1508	Tukaramnagar	18.5529868	73.9323081
+1510	Ahilya Society	18.552747	73.878122
+1511	Akshay Sunshri	18.5204303	73.8567437
+1512	Munjaba Vasti	18.587177	73.8968506
+1513	Vaiduvasti	18.5332247	73.8253649
+1515	Swaraj mazda	18.5204303	73.8567437
+1516	Pimpale Saudagar Chowk	18.6106899	73.7990755
+1518	Ramchandra Mangal Karyalaya	18.5204303	73.8567437
+1519	Express highway phata	19.0229364	73.0451677
+1520	Shirgaon	18.6805499	73.6874664
+1522	NIV	18.543294	73.788019
+1523	Sai Chauk	18.543537	73.784902
+1525	Paduka mandir	18.5245052	73.8414833
+1526	COD Corner	18.5204303	73.8567437
+1528	Ramanand Mangal Karyalaya	18.5204303	73.8567437
+1530	Hinjewadi Jakatnaka	18.591836	73.756851
+1531	Shivratn Mangal Karyalaya	18.5204303	73.8567437
+1532	Jadhav nagar	18.4661359	73.8279381
+1533	Venutai College	18.468494	73.831616
+1535	Defence Colony	18.6020503	73.9328098
+1536	Ankur Bungalow	18.502158	73.805332
+1538	Sutar Dawakhana	18.5036536	73.8077652
+1539	NDA Gate No 10	18.454558	73.766925
+1541	Pickock Bay	18.4372491	73.7505438
+1542	Donger Matha	18.5204303	73.8567437
+1543	Dhumal Tali	18.433698	73.747358
+1545	Kudje Stand	18.5204303	73.8567437
+1546	Agalambe Phata	18.417787	73.735547
+1548	Mandvi Khurd	18.5204303	73.8567437
+1549	Mandavi Budruk	18.5204303	73.8567437
+1551	Sangrun Phata	18.403979	73.681827
+1552	Sangrun	18.400575	73.679059
+1553	Shastrinagar 	18.5551525	73.8992392
+1554	Balewadi	18.5825868	73.7683784
+1556	Ahire gaon	18.455339	73.732116
+1557	Harijan wasti	18.5204303	73.8567437
+1559	Golewadi	18.5204303	73.8567437
+1560	Mandhare wasti pole phata	18.5204303	73.8567437
+1562	Sinhgad Payth Aatekar wasti	18.5204303	73.8567437
+1563	Army College	18.52964	73.907933
+1565	Farshi karkhana	18.531281	73.914076
+1566	Kachare Wasti	18.533485	73.920663
+1568	Mundhava goan corner	18.533802	73.929892
+1569	Mundhava Goan	18.532675	73.932838
+1570	Shinde Mundhava	18.5094678	73.930765
+1572	Keshavnagar	18.5204303	73.8567437
+1574	Samartha Vidyalaya Indrayani Nagar	18.466393	73.9199998
+1575	Markal Gaon	18.667683	73.949866
+1576	Indrayani Nadi Pool	18.670046	73.984985
+1577	Tulapur	18.6694438	73.9954909
+1579	Phulgaon	18.656031	74.0153231
+1581	Sakore Mala	18.5204303	73.8567437
+1582	Raysoni Farm	18.5204303	73.8567437
+1584	Power House Markal	18.6718661	73.9653715
+1585	Kate Wasti	18.5894857	73.895824
+1586	Rajas Soc.	18.4777094	73.8971106
+1588	Nivedita Jhula Ghar Kirkat wadi	18.5204303	73.8567437
+1589	Malwadi Kirkat wadi	18.5204303	73.8567437
+1591	Mal Hagwane wasti	18.5204303	73.8567437
+1592	Nandoshi Limbache Zad	18.5204303	73.8567437
+1594	Jivan Shikshan Mandir Wanjal Wadi	18.5204303	73.8567437
+1595	Sanaswadi Nandoshi	18.414341	73.803102
+1597	Link Road	18.6142312	73.7756244
+1598	Shagun chowk	18.622606	73.801505
+1600	Paramhans nagar	18.5083225	73.8040428
+1601	Bahiratwadi 	18.535706	73.8290409
+1603	Uruli Devachi	18.4549714	73.9565551
+1604	Sadanand Nagar	18.52235	73.865135
+1606	Sarpodyan Telco Road	18.5204303	73.8567437
+1607	HDFC corner	18.5204303	73.8567437
+1608	M23	18.531082	73.8669505
+1610	Maharashtra Housing Yerwada	18.561671	73.89676
+1611	Amrai	18.421127	73.730057
+1612	Poultry Farm Aglambe	18.5204303	73.8567437
+1614	Theurgaon Phata	18.617356	73.767218
+1615	Green Ekers	18.457392	73.804411
+1616	Panale farm	18.5204303	73.8567437
+1618	Kunjir vihir	19.4062635	73.8496252
+1619	Gosavi wasti	18.5091472	73.9459015
+1621	Theur gaon	18.522877	74.046326
+1622	Theur factory	18.525271	74.043897
+1624	Malwadi Kunjir 	18.5204303	73.8567437
+1625	Karade Wasti 	18.562279	73.938945
+1627	Railway gate Mhatobachi alandi	18.6667	73.9
+1628	Javalkar Hospital	18.605501	73.823098
+1629	Mhatobachi Alandi	18.452382	74.0690625
+1631	Tukai nagar	18.487942	73.9422277
+1632	Bhansali complex	18.5204303	73.8567437
+1634	Chakankar mala	18.5204303	73.8567437
+1636	Bharat English school	18.5316136	73.8490277
+1637	Mojhe Vidyalay	18.5204303	73.8567437
+1638	Master Bakery	18.632471	73.81993
+1640	Kakde Vasti	18.6733338	74.6017946
+1641	Oswal Estate	18.5204303	73.8567437
+1643	Employment Office	18.523328	73.869116
+1644	Krushnanagar	18.5566876	73.9168766
+1646	Kukkut palan kendra	18.5204303	73.8567437
+1647	Raysoni farm	18.5204303	73.8567437
+1648	Sakore mala	18.5204303	73.8567437
+1650	Ganga Village	18.4828574	73.9334103
+1651	Satav Nagar	18.4768416	73.9304711
+1	Bajaj Mhalunge	18.5204303	73.8567437
+2	Suvarna Fabricators	18.5204303	73.8567437
+5	LueMax	18.5204303	73.8567437
+8	Pancharatna Complex	18.5204303	73.8567437
+11	Pegra gran company	18.5204303	73.8567437
+15	Kuruli Gaon	18.715294	73.848259
+17	Moshi phata chimboli phata	18.5204303	73.8567437
+22	Borate wasti	18.665352	73.84863
+25	Wakhar Mahamandal Bhosari	18.6385292	73.8477874
+28	Bhosari gaon	18.6247121	73.8483387
+31	Philips	18.6203626	73.8506861
+34	Nashik phata	18.5980935	73.7995844
+37	Alfa Laval Atlas Company	18.5204303	73.8567437
+41	Bopodi Jakat Naka	18.571469	73.838028
+44	Khadaki railway station	18.5631806	73.8406198
+48	Raja bangalow	18.551905	73.849493
+50	Poultry Farm Old Mumbai Pune Road	18.546806	73.851656
+55	Engineering college hostel	18.528357	73.852084
+59	GPO	18.523517	73.87549
+62	Juna Bajar 	18.527256	73.862344
+65	shimala office shivajinagar	18.5308225	73.8474647
+69	E square	18.537936	73.834618
+72	Boys batalian	18.560308	73.815169
+74	Sindh colony gate 2	18.5204303	73.8567437
+78	Sangvi phata	18.572723	73.807171
+81	ESI Hospital	18.484071	73.859721
+84	Wakad phata 	18.587968	73.789228
+87	Kalewadi phata	18.603829	73.776539
+90	Dange chowk	18.6151	73.765693
+93	Bhikardas maruti madnir	18.508215	73.853702
+96	Dakshinabhimukh Maruti mandir	18.6569183	73.7679965
+100	N T wadi	18.5332548	73.8463172
+102	Deccan Gymkhana	18.5183409	73.840436
+105	Petrol Pump Karve Road	18.510551	73.834878
+108	Paud Phata Dashabhuja Ganpati	18.5204303	73.8567437
+112	Dahanukar colony	18.4956151	73.8110279
+116	Ishanya Nagari	18.487678	73.802842
+119	Maharashtra mandal	18.509646	73.847399
+123	Dnyaneshwar Paduka chowk	18.5204303	73.8567437
+126	Bajaj showroom wakadewadi	18.539814	73.850922
+130	Sapras post	18.5204303	73.8567437
+1654	Gavane Nagar	18.5204303	73.8567437
+1655	Handewadi gaon	18.4499531	73.9234903
+1657	Holkarwadi	18.438516	73.9411256
+1658	Dairy farm	18.620593	73.76071
+1660	Punawale corner	18.5204303	73.8567437
+1661	Pabal Phata	18.5204303	73.8567437
+1663	S T Stand Kesnand	18.5731929	74.0241367
+1665	Highpeek Company	18.5204303	73.8567437
+1666	Kesnand	18.5731929	74.0241367
+1667	Dhore Vasti	18.5204303	73.8567437
+1669	Shivneri Poultry Farm	18.5204303	73.8567437
+1670	Dadegaon Phata	18.5204303	73.8567437
+1672	Shinde wasti	18.6216954	73.9602287
+1673	KRB Workshop	18.5204303	73.8567437
+1674	Lonkar wasti	18.527644	73.949798
+1676	Ghavate nagar	18.5204303	73.8567437
+1677	VSI company	18.5204303	73.8567437
+1679	Chavan Nagar Sambhajinagar	18.4694197	73.8553222
+1680	Aranyeshwar mandir	18.4855354	73.8523804
+1682	Shivdarshan Vasahat	18.4900896	73.8531232
+1683	Gokul Nagar Katraj	18.4471901	73.874985
+1684	Gajanan Nagar	18.457917	73.877944
+1686	Mukbadhir Shala	18.659358	73.764899
+1687	Gokul nagar	18.5877162	73.8885824
+1689	Manaji nagar	18.4549502	73.8255487
+1690	JK Industries	18.5204303	73.8567437
+1691	Narhe Ambegaon	18.450954	73.837548
+1692	Indira Institute	18.5308225	73.8474647
+1694	Tathawade Phata	18.5967267	73.7939677
+1696	Pawana pul Rawet	18.5204303	73.8567437
+1697	Jadhavwadi phata	18.5204303	73.8567437
+1698	Shamal Rose Nursery	18.5204303	73.8567437
+1700	Urse Phata	18.5204303	73.8567437
+1701	Bebadohal	18.6912834	73.6462625
+1703	Dhavde Vasti	18.5542406	73.935911
+1704	Atlas Company	18.5204303	73.8567437
+1706	Spicer college press	18.5204303	73.8567437
+1707	Botanical Garden	18.5660186	73.8257325
+1709	LIC Colony Khadaki	18.562315	73.833407
+1710	Khadaki Station corner	18.560732	73.841308
+1712	Shrama Safalya	18.6447989	73.7737101
+1713	Anandpark Kharadi	18.5541598	73.9302206
+1715	Ranware wasti	18.5204303	73.8567437
+1716	Ravinagar Tapkir wasti	18.553406	73.75384
+1717	Soos gaon	18.5436733	73.7844514
+1719	Symbiosis college phata Soos	18.5204303	73.8567437
+1720	Sanjay Nilgiri Garden Shinde Wast	18.5204303	73.8567437
+1721	Dhamale wasti Soos road	18.555866	73.72032
+1723	Gaikwad wasti Nandegaon	18.5204303	73.8567437
+1725	Gawade wasti	18.538569	73.709808
+1726	Satav wasti	18.497766	73.941607
+1727	Lawale wasti	18.528251	73.703528
+1729	Kasturba School Wadia	18.5204303	73.8567437
+1730	Kalptaru Society	18.5204303	73.8567437
+1732	Ghorpadi Phata	18.5204303	73.8567437
+1734	Dhole Patil Farm	18.5204303	73.8567437
+1735	Yashwant Nagar	18.5402123	73.8352899
+1736	Ashoknagar	18.5414013	73.8396802
+1738	Rangehill Circle 2	18.5204303	73.8567437
+1739	Rangehills H Type Quarters	18.544901	73.839313
+1740	Military Hospital	18.501818	73.890818
+1742	Malkhed	18.3917	73.702067
+1743	Wardade phata	18.389412	73.700424
+1744	Wardade	18.385607	73.698978
+134	Phulenagar	18.5587288	73.8782926
+136	Mental Hospital Corner	18.5204303	73.8567437
+140	Panyachi Taki	18.575289	73.814975
+143	Sai Corner	18.5306416	73.8397948
+146	Katraj bus stand	18.481564	73.857141
+149	Chaitanya nagar	18.4979807	73.8051458
+153	Natu bag	18.481564	73.857141
+154	Aranyeshwar Corner	18.4925316	73.8574469
+158	Shivajinagar Station	18.532448	73.849456
+161	Gaimukh Ambegaon Phata	18.5204303	73.8567437
+164	Chandrabhaga Restaurant	18.45405	73.851345
+168	Surya hospital	18.52159	73.855775
+171	Bhumkar Complex	18.602887	73.749347
+174	Radhika Soc	18.5204303	73.8567437
+178	Gar mala	18.5204303	73.8567437
+180	Sanas Vidyalaya	18.4599788	73.8119559
+184	Jadhavwadi Andh shala	18.5204303	73.8567437
+187	Kolhewadi	18.4422637	73.7852922
+189	Khadakwasla Dharan	18.5204303	73.8567437
+193	Shivaji Putala Kalubai Mandir	18.5204303	73.8567437
+197	Pan mala Sinhgad Road	18.500738	73.844967
+201	Vitthalwadi jakat naka	18.5204303	73.8567437
+205	Anand nagar singhgad rd	18.4790788	73.8255677
+208	Wadgaon phata	18.466096	73.816713
+211	Childrens School	18.5204303	73.8567437
+215	Gorhe bu. jeevan shikshan mandir	18.5204303	73.8567437
+218	Venkatesh poultry farm	18.406694	73.756346
+222	Kasaba Police Chowky	18.519784	73.856201
+225	Rastewada	18.5204389	73.864941
+228	Sasoon hospital	18.525701	73.87206
+231	Wadia college	18.5334387	73.880002
+234	Budhrani Hospital	18.53298	73.886073
+237	Kawdewasti	18.5204303	73.8567437
+240	Pune University Gate	18.541962	73.829295
+244	Baner phata	18.550499	73.80954
+246	Anand park sindhi colony	18.5568162	73.806984
+251	Ba ra gholap	18.575605	73.810364
+254	shitole nagar corner	18.5204303	73.8567437
+257	Vasantdada Putala	18.57575	73.826094
+260	Mohammadwadi jakat naka	18.5204303	73.8567437
+263	Railway Crossing Mohammadwadi	18.5204303	73.8567437
+268	Mahamdwadi Gaon	18.5204303	73.8567437
+271	Khole wasti 	18.5204303	73.8567437
+274	Kunte Chauk	18.514469	73.852255
+278	Law college	18.516111	73.829066
+281	Sheti mahamandal	18.5204303	73.8567437
+283	Shivaji housing board bus stop	18.5204303	73.8567437
+288	Ladies Hostel Pune University	18.55173	73.82815
+291	Dattanagar Highway	18.4507053	73.8580397
+295	Krushnai Mangal Karyalaya	18.5204303	73.8567437
+298	Warje gaon highway	18.480297	73.805065
+301	Aditya garden city	18.4898951	73.7867629
+304	Chandani chauk	18.506527	73.7794093
+306	Nisarg Aaditya group	18.5204303	73.8567437
+310	Sayali Restaurant	18.5204303	73.8567437
+313	Yashoda Nivas	18.6514906	73.7804729
+315	Chha. Shivaji Krida Sankul	18.5204303	73.8567437
+320	Padmji Paper Mill	18.5204303	73.8567437
+323	Jakatnaka pavanapul	18.5204303	73.8567437
+327	Mehta hospital	18.645121	73.789908
+330	Akurdi khandoba chauk	18.649997	73.785165
+333	Nigadi jakat naka	18.631265	73.777034
+336	Moshi phata chikhali	18.681848	73.819537
+340	Sukhwani	18.5089845	73.9320785
+343	Yashwant Nagar Telco Road	18.5204303	73.8567437
+346	Master bakery	18.632471	73.81993
+349	PCMT	18.620129	73.85043
+352	Wadilal	18.5204303	73.8567437
+354	Deichi Company	18.5204303	73.8567437
+358	Tapodham	18.482217	73.80789
+361	Maruti Mandir Karve Road	18.503754	73.820291
+364	Chinchwad gaon	18.6338043	73.7791795
+368	Delux	18.619874	73.801411
+371	Bhatnagar	18.477816	73.8975826
+373	Pimpri  chauk Bus stand	18.559766	73.815308
+376	Vishal nagar C ward office	18.5204303	73.8567437
+380	Tulashi chemikals	18.5204303	73.8567437
+383	NDA gate Kondhava gate	18.455919	73.768468
+387	Ahire gate Phata	18.466865	73.779361
+390	Shivane gaon	18.4558393	73.8209234
+393	Queen Mary Technical	18.5204303	73.8567437
+396	Bhaurao Patil Chowk	18.566363	73.831334
+400	Alegaonkar High school	18.5685281	73.8458948
+403	Bhapkar Petrol Pump City pride	18.48971	73.857638
+407	Mangdewadi Petrol Pump	18.436368	73.86054
+410	Stage kramank 6	18.5204303	73.8567437
+414	Gogalwadi Phata	18.5204303	73.8567437
+416	Shindewadi Gujarwadi	18.5204303	73.8567437
+419	Shivapur Bag Post office	18.5204303	73.8567437
+424	Raje Phata	18.9805417	73.1375421
+427	Arvi phata	18.5204303	73.8567437
+430	Kondhanpur Gaon	18.5204303	73.8567437
+433	Rahatawade Gaon	18.5204303	73.8567437
+437	Krushnanagar Corner	18.666661	73.795941
+441	Yamunanagar Corner	18.664508	73.786573
+444	Akurdi Khandoba Chowk	18.649997	73.785165
+448	Mandai	18.512879	73.8562411
+451	More vidyalaya	18.51045	73.819635
+453	Anand nagar paud road	18.5094546	73.8136711
+455	Vanaz Corner	18.50766	73.808069
+458	Bharti nagar	18.5069596	73.7966899
+461	Bavdhan Khind 	18.4973349	73.7886276
+464	Ramnagar Bharat Electronics	18.5269904	73.7829405
+469	Panchwati	18.5287353	73.8157056
+471	NCL Market	18.539926	73.816823
+474	Pune Vidyapeeth	18.555833	73.822598
+477	Krutrim reshim paidas kendra	18.549212	73.8509
+481	Kasrawadi	18.6060873	73.8227917
+483	HA Factory D Y Patil college	18.5204303	73.8567437
+488	Kohima line	18.5204303	73.8567437
+491	Garden city	18.6807904	73.7470502
+494	Dehuroad railway staion	18.6804696	73.7342706
+497	Dehu road police station	18.686313	73.722184
+501	Amarjai Begdewadi phata	18.5204303	73.8567437
+505	Somatne Phata	18.702951	73.687747
+508	Bhandari hospital	18.718266	73.680375
+511	Paranjpe Hospital	18.5086456	73.8448469
+513	Egale Plax Petrol Pump	18.5204303	73.8567437
+517	Wadgaon Maval Phata	18.5204303	73.8567437
+520	Nerhe Phata	18.4489065	73.8263226
+523	Punavale	18.6368016	73.7463147
+526	Dairy Farm	18.620593	73.76071
+530	College of engineering pune	18.5277437	73.8533007
+534	Kumbhar Wada	18.536592	73.9425951
+538	wadia bangala	18.549831	73.893714
+541	Ramwadi Jakatnaka	18.555108	73.905778
+544	ISL Company	18.5204303	73.8567437
+546	Dharmanagar 5 va Mail	18.5204303	73.8567437
+551	Agrawal Colony	18.509763	73.8762713
+553	15 number Manjari Gaon Phata	18.5204303	73.8567437
+557	Phursungi gaon phata	18.4714191	73.9596509
+561	Wakvasti	18.491042	74.007742
+564	Loni station	18.488876	74.027791
+568	Borkar wasti	18.488692	74.045981
+571	Kalbhor wasti solapur rd.	18.5062211	73.9126174
+574	Naygaon phata	18.5204303	73.8567437
+577	Yadav Wasti Chaufula 	18.5204303	73.8567437
+580	Malran 	18.5204303	73.8567437
+583	Bodhe wasti 	18.5204303	73.8567437
+586	Railway Station Uruli Kanchan 	18.4938624	74.1369524
+590	Lakshminagar Corner	18.5204303	73.8567437
+593	Ghorpade peth colony	18.5032467	73.8645797
+597	Juna pul gate	18.50801	73.879397
+600	Nigadi	18.6517098	73.7683784
+603	chinchwad station	18.656994	73.765219
+605	H A Factory	18.558521	73.845195
+607	Amunition Factory Road	18.5204303	73.8567437
+611	Sutardara	18.5167978	73.8079434
+613	LIC Colony Paud Road	18.510875	73.818328
+617	Deccan corner sambhaji pul	18.513793	73.841438
+621	Shahu chauk	18.509029	73.858027
+624	Pandavnagar	18.543975	73.782667
+627	Maruti Mandir 	18.508215	73.853702
+630	Wadgaon budruk	18.4673041	73.8330844
+633	Vaidwadi	18.5332247	73.8253649
+635	Kalubai mandir solapur road	18.506623	73.906536
+639	Railway Crossing Gorpadi 	18.516026	73.907262
+644	Anant Talkies	18.529399	73.902506
+646	Ghorpadi Post Office	18.52509	73.894597
+650	Sai sayaji nagar	18.4909333	73.7924618
+653	15 August Lodge Somwar Peth	18.5214325	73.8676347
+656	Chintamani Nagar	18.4665827	73.8661646
+659	Kothari Corner	18.5204303	73.8567437
+662	Petrol Pump Rajendranagar	18.510551	73.834878
+666	Surgeon quarters	18.5204303	73.8567437
+669	Kirloskar Oil Engine Manaji Bag	18.569811	73.841791
+673	Ramkrushna Mangal Karyalaya	18.5204303	73.8567437
+677	Kumbare Park	18.5204303	73.8567437
+680	Mahesh Vidyalaya	18.5204303	73.8567437
+683	Tata gaurdroom Kharadi phata	18.562652	73.927638
+687	Sambhaji chauk Ganesh nagar	18.5111468	73.8371508
+690	Paranj company Relax hotel	18.5204303	73.8567437
+694	Sainathnagar Mundhava	18.532675	73.932838
+698	Dagade wasti	18.507083	73.776682
+701	Mariaai Mandir Bhugaon	18.5204303	73.8567437
+705	Mathalwadi	19.2282646	73.1492512
+708	Nerolac Paint Company	18.5204303	73.8567437
+712	Mail dagad kramank 21	18.5204303	73.8567437
+716	Vishkar India company	18.5204303	73.8567437
+719	Stage no.7	18.417774	73.856749
+722	Shivregoan Phata	18.5204303	73.8567437
+725	Warje Gaon Nasrapur Road	18.5204303	73.8567437
+729	Sangvi Company	18.269826	73.880271
+732	Bhairoba Mandir Nasarapur	18.250726	73.880518
+736	Bhauraba nala	18.506624	73.897567
+739	Jambhulkar Chauk 	18.5204303	73.8567437
+743	Kedari Nagar	18.4989051	73.9025463
+746	Heaven Park	18.4821866	73.9132023
+748	Fatimanagar Municipal shala	18.5204303	73.8567437
+752	Ramoshi gate	18.510843	73.868377
+753	A D camp chauk	18.5184641	73.8792278
+756	Sonya Maruti Chowk	18.515925	73.860553
+759	Mauli bangala	18.5006674	73.9524683
+762	P and T colony	18.494252	73.857966
+765	Poona club	18.5233409	73.8792113
+768	Sainikwadi	18.5515816	73.9161418
+771	Wadgao sheri	18.5535156	73.9301037
+774	Gunjan Theature	18.5204303	73.8567437
+778	Yerwada post office	18.558997	73.892022
+782	Five nine area	18.4579553	73.7919103
+785	Officers mess	18.590694	73.91543
+788	Jakat Naka Khese Ali	18.5204303	73.8567437
+791	Khandave Bungalow	18.5204303	73.8567437
+794	Kakde Vasti Lohgaon	18.5204303	73.8567437
+798	Wadgaon Shinde	18.6121054	73.9395631
+801	Vimannagar Gate	18.5502413	73.9186657
+805	Dehugaon	18.6911825	73.8005839
+808	Kudba Kruti Manmohan	18.5204303	73.8567437
+812	Chincholi	18.6898223	73.7514631
+814	Dehu road railway station	18.6804696	73.7342706
+819	Cantonment Jakat Naka	18.571469	73.838028
+822	Badade wasti	18.5204303	73.8567437
+825	Rajendra pipe company	18.5204303	73.8567437
+828	Prayag Dham Phata 	18.5204303	73.8567437
+832	Janakbaba Darga	18.564873	73.943693
+835	Satav High School	18.580514	73.977547
+837	Kesanand phata	18.5730161	74.0216544
+840	Jagtap Dairy Lonikand	18.616206	74.019564
+843	Power House Phulgaon	18.656031	74.0153231
+848	Kadam Wasti	18.7277318	73.6544392
+851	Bapurao Smarak	18.5204303	73.8567437
+854	Shinde Wasti Burkegaon	18.5204303	73.8567437
+857	Shitole mala	18.573082	73.834668
+860	Mehandale Guarage	18.5204303	73.8567437
+863	Karnataka High school	18.501747	73.827077
+866	Madhusanchay Society	18.5204303	73.8567437
+869	Sahvas Soc	18.4947072	73.8202957
+872	Ingale Colony	18.465671	73.777036
+875	Kondhava Dhavde	18.4574675	73.7698492
+878	Lakaki Bungalow	18.5204303	73.8567437
+881	Kusalkar Putala	18.5204303	73.8567437
+885	Link road	18.6142312	73.7756244
+888	Chinchwade Nagar Corner Chinchwad Road	18.5204303	73.8567437
+892	Matoshri nagar	18.4897798	73.8255379
+894	D Y Patil college Akrdi	18.6426993	73.7783951
+899	Chintamani Chowk	18.638229	73.766063
+902	Phadtare Wasti	18.5204303	73.8567437
+904	Z F Stearing Company	18.5204303	73.8567437
+907	Bhandari nivas	18.6165282	73.8742054
+910	Wajewadi Chaufula	18.5204303	73.8567437
+914	Karandi gaon	18.728978	74.061998
+916	Maruti Mandir Wakad	18.589549	73.774258
+921	Kalasgaon	18.5204303	73.8567437
+923	512 Factory Gate 	18.5804032	74.633697
+926	Khadki Police Station	18.5571993	73.8453063
+930	Spicer college	18.5636712	73.8194832
+934	Dapodi Gaon	18.5639463	73.8102927
+937	panyachi takai sangvi	18.575547	73.815303
+941	Rahatani gaon	18.602959	73.795395
+944	Saurabh company tambe company	18.5204303	73.8567437
+947	Dhangar Nagar Kalewadi	18.6150264	73.7933809
+950	Avinash Mangal Karyalaya	18.5204303	73.8567437
+954	Krushnamandir Corner	18.5204303	73.8567437
+958	Durwankur lawns	18.5204303	73.8567437
+961	Bhosari phata	18.634142	73.874902
+964	Nirma company	18.5204303	73.8567437
+967	Chincheche jhad	18.5204303	73.8567437
+969	Sai Lila nagar Kate Wasti	18.5204303	73.8567437
+973	General post office	18.5229149	73.8752894
+976	Modern Bakery Nana peth	18.515391	73.867056
+979	Century company	18.5602954	73.8074237
+983	Yashwant nagar telco road	18.5204303	73.8567437
+987	Sanghavi College	18.6462123	73.8020208
+990	MIDC Chinchwad	18.603942	73.824525
+993	Elpro Company	18.632986	73.785336
+996	Kesari Wada	18.516228	73.848865
+998	Somanagar Society	18.5204303	73.8567437
+1001	Ladies Hostel 	18.461203	73.877481
+1004	Smashanbhumi Kondhava	18.5078689	73.8400685
+1008	Mangalben company Sai service	18.5204303	73.8567437
+1012	NIBM Road	18.4702707	73.9001742
+1015	Kalubai mandir	18.506623	73.906536
+1018	Vikrikar karyalaya	18.5204303	73.8567437
+1021	Transport Nagari	18.6653272	73.767643
+1025	Sindhunagar Corner	18.5204303	73.8567437
+1028	Mhalsakant Chowk	18.6497062	73.7778363
+1031	Prachi	18.645269	73.770629
+1033	Akurdi Police Chowky	18.660823	73.775577
+1037	Bijlinagar	18.6374555	73.7764901
+1040	Om Sairam complex	18.6324164	73.7800298
+1043	Indrayani nagar Corner	18.540509	73.830538
+1046	Mahila Mandal	18.504407	73.850632
+1049	Power House Ghotawade	18.523355	73.669998
+1053	SNZ chemical company	18.5204303	73.8567437
+1056	Trimurti bunglow	18.5204303	73.8567437
+1059	Baner gaon	18.5601154	73.7871306
+1062	Kalamkar wasti	18.5204303	73.8567437
+1065	Mhalunge Gaon	18.574579	73.755451
+1068	Police line Gokhalenagar	18.526533	73.843815
+1073	Gandhi Training Corner	18.5204303	73.8567437
+1076	Alhat wasti	18.5204303	73.8567437
+1079	Ghule wasti	18.5095721	73.9591266
+1082	Railway crossing	18.5287449	73.8966848
+1085	Malwadi	18.5115727	73.9447994
+1088	Annasaheb magar vidya mandir	18.5204303	73.8567437
+1092	Dattawadi pul	18.503691	73.838893
+1095	Jal shudhikaran kendra singhroad rd	18.497971	73.84092
+1099	RajaramPool	18.489225	73.830747
+1102	Star garden	18.475317	73.816215
+1105	Tilekar wasti	18.507555	73.9275318
+1107	Megarpatta City	18.5158057	73.9271644
+1111	Mundhva Gaon	18.533802	73.929892
+1114	Kachare wasti	18.533485	73.920663
+1117	Pingale wasti	18.530591	73.910983
+1120	Dhankawadi	18.4573215	73.8507279
+1123	Police Line Modern College	18.5204303	73.8567437
+1128	Kamala nehru hospital	18.522617	73.862728
+1131	Suply depot	18.565143	73.850239
+3	MIDC Phata	18.5980935	73.7995844
+155	Bhapkar petrol pump City Pride	18.48971	73.857638
+312	Shivsagar mangal karyalay	18.5204303	73.8567437
+454	Jai bhavani 	18.509391	73.811764
+604	Chinchwad chauk	18.5111468	73.8371508
+754	Nana peth	18.5127916	73.8676347
+1135	Pooja hospital	18.589886	73.81952
+1138	Bhairoba Nagar	18.506624	73.897567
+1141	Shikrapur Phata	18.5204303	73.8567437
+1144	Darekar Wasti	18.5204303	73.8567437
+1147	Koregaon Bhima	18.6485712	74.0623244
+1150	Lieson Company	18.5204303	73.8567437
+1153	Chandan nagar	18.5472058	73.9403908
+1156	Wadia bunglow	18.549831	73.893714
+1159	Subhanshah Darga	18.5204303	73.8567437
+1162	Krishna bajar	18.581456	73.815663
+1165	Dehu phata	18.669867	73.891174
+1167	Gokhale mala sankalp garden	18.5204303	73.8567437
+1171	Durvankur Lawns	18.5204303	73.8567437
+1174	Chh.Shivaji krida sankul	18.5204303	73.8567437
+1178	Parade ground	18.5058449	73.8946277
+1181	Dighigaon	18.609318	73.873257
+1184	Telco godown	18.620916	73.874102
+1186	Navin ST stand	18.5204303	73.8567437
+1189	Canol Jhopadpatti	18.495727	73.869256
+1194	Shelke wasti	18.5204303	73.8567437
+1197	Indraprabha mamurdi	18.6745203	73.7168927
+1200	Vikasnagar	18.492424	73.9025463
+1203	Wakhar mahamandal bhosari	18.6385292	73.8477874
+1206	Borate Vasti	18.665352	73.84863
+1209	Chakan market yard	18.4868701	73.8676347
+1212	Rohakal Phata	18.5204303	73.8567437
+1215	Khadi Machine Chakan	18.7602664	73.8630346
+1218	Kanda Lasoon Sanshodhan Kendra	18.5204303	73.8567437
+1223	Kirloskar	18.495552	73.667893
+1225	Khale banglaow	18.5204303	73.8567437
+1229	Datta Mandir Marnewadi	18.5204303	73.8567437
+1232	Shivnarwadi	18.5204303	73.8567437
+1235	Bhilarwadi chauk	18.5204303	73.8567437
+1238	Mehendale garage	18.5204303	73.8567437
+1241	Petrol pump rajendranagar	18.510551	73.834878
+1244	Zila Parishad School Yewlewadi	18.5204303	73.8567437
+1248	Shri Shatrunjay jain temple	18.4516009	73.8781088
+1252	Rajas Soc. Corner	18.5273078	73.8286185
+1255	Chavan mala	18.4673041	73.8330844
+1259	Vitthalwadi Mandir Masulkar	18.5204303	73.8567437
+1263	Cable company	18.5204303	73.8567437
+1266	Amralewadi phata	18.603829	73.776539
+1269	Santi company	18.5204303	73.8567437
+1271	Vitthalwadi phata	18.5204303	73.8567437
+1274	ST stand Paudgaon	18.5204303	73.8567437
+1277	Kekan gas agency	18.5204303	73.8567437
+1280	Vidyanagar Swapnaganga bangalow	18.5204303	73.8567437
+1283	Rakshak Society Kharadi	18.5545369	73.9418603
+1287	Swargate corner	18.5015	73.858617
+1290	Infosys Phase 2	18.593565	73.708268
+1294	Dharmaraj Mangal Karyalaya Ravet	18.6496322	73.7448437
+1297	Tata Motors IT Park 	18.5204303	73.8567437
+1300	Paramhansa Corner	18.5204303	73.8567437
+1304	Shivshankar Chowk	18.5381935	73.7812713
+1307	Shagun chauk	18.5190432	73.7773579
+1311	Avinash mangal karyalay	18.5204303	73.8567437
+1315	Gondhalenagr	18.5204303	73.8567437
+1318	Power House Phursungi	18.476421	73.957156
+1322	Bhadale Wasti Devachi Uruli 	18.4833333	74.1333333
+1327	Zendewadi 	18.413397	74.007566
+1331	Divegaon phata 	18.383438	74.015624
+1334	Waghere college 	18.3546681	74.0258145
+1337	Binawat Township	18.5204303	73.8567437
+1341	Kaleborate Nagar	18.484989	73.939395
+1344	Devpari Maharaj Mandir	18.5204303	73.8567437
+1348	Wadgaon Ghenand Shala	18.715819	73.93528
+1352	Shel Pimpalgaon	18.7374043	73.9565551
+1353	Rajsthan Hostel	18.5204303	73.8567437
+1354	Chincholi Phata	18.733205	73.974489
+1357	Subhash Vidyalaya	18.725428	73.998793
+1360	Vitthai mangal karyalaya	18.5204303	73.8567437
+1363	Rakshak Soc. Ganpati mandir	18.5623007	73.8955291
+1367	Sahitya Parishad Peru Gate	18.5204303	73.8567437
+1370	Vasundara Lawns	18.5204303	73.8567437
+1373	Ankush chauk	18.666305	73.776112
+1376	Jambhalkar Wasti	18.5204303	73.8567437
+1379	Lipanewasti	18.5204303	73.8567437
+1383	Sai Industries Company	18.438998	73.862968
+1387	Sarkari Vishram Gruh	18.5204303	73.8567437
+1390	Sangamwadi gaon	18.5204303	73.8567437
+1393	Shirke Company	18.528565	73.906239
+1396	Bavdhan khind	18.4973349	73.7886276
+1399	Garware Bungalow	18.5204303	73.8567437
+1402	Gol Market NDA	18.4595744	73.7610241
+1406	D2 Circle	18.531395	73.811645
+1408	Rama Bistake park	18.5204303	73.8567437
+1411	Saurabh company Tambe Shala	18.5204303	73.8567437
+1415	Shivshakti Mandir	18.5204303	73.8567437
+1419	Bhairavnagar Pimple Gurav	18.5867193	73.8154394
+1422	Jai bhavani godown 	18.5204303	73.8567437
+1425	Bhekarai Nagar	18.4882495	73.9499426
+1428	Shivaji nagar S T stand	18.541845	73.82766
+1433	Wanvadi Bazar 	18.495112	73.894591
+1436	Mahatma Phule Vasahat	18.622309	73.8460874
+1439	Kondhava Khurd	18.4687712	73.8830701
+1442	Dabhade Wasti Charholi	18.657166	73.899111
+1446	Queen company 	18.5204303	73.8567437
+1449	Hanuman Mandir Charminar 	18.5204303	73.8567437
+1453	Wadachi Wadi	18.436634	73.918233
+1456	PWD gate	18.5753534	73.8147277
+1459	Jagtap chauk 	18.492024	73.900162
+1462	Bank of Maharashtra 	18.529951	73.851043
+1466	Yamuna Nagar	18.6667547	73.7838215
+1469	Dehugaon grampanchayat	18.717599	73.76779
+1472	Akurdi police chauky	18.6466046	73.8004248
+1476	Naik Hospital	18.5104337	73.8595057
+1479	Nanekar park	18.5204303	73.8567437
+1482	Chinchwade nagar corner Akurdi road	18.5204303	73.8567437
+1486	Wipro company Circle	18.5133118	73.82879
+1488	Indrayani nagar Corner Jayanand Road	18.5204303	73.8567437
+1493	Star gardan	18.475317	73.816215
+1496	Kasturba general hospital	18.5724541	73.8813671
+1499	Kekan ges agency	18.5204303	73.8567437
+1502	Sadu nana wasti	18.506761	73.94
+1503	Vitthalwadi Mandir Sadesataranali	18.508202	73.941246
+1506	Sadesataranali	18.5141791	73.9499426
+1509	Vidi Kamgar Vasahat Yerawada	18.5583214	73.88601
+1514	Bhairavnagar pimple gurav	18.5867193	73.8154394
+1517	Shivshakti mandir	18.5204303	73.8567437
+1521	Pashan gaon	18.5396184	73.7955869
+1524	Abhinav college	18.544885	73.779118
+1558	Krishnai water park	18.4053927	73.7689717
+1561	Tilak Bag	18.5204303	73.8567437
+1564	Pingle Wasti	18.5204303	73.8567437
+1567	Dimond watch company	18.533852	73.923752
+1571	Keshavnagar pul	18.5204303	73.8567437
+1573	Idrayani nagar bhosari	18.6343474	73.8411712
+1578	Balsadan	18.5135398	73.8533876
+1580	Malwadi Phulgaon	18.656031	74.0153231
+1583	Kukut Palan Kendra	18.5204303	73.8567437
+1587	Bhushan Soc	18.4489072	73.8642681
+1590	Hagwane Padwal	18.441734	73.790413
+1593	Nandoshi	18.4220836	73.8014693
+1596	Manik colony	18.6285832	73.7878659
+1599	Waghire height	18.5204303	73.8567437
+1602	Raut wasti 	18.456512	73.960813
+1605	Dhayreshwar Mandir	18.5204303	73.8567437
+1609	Moze Adhyapak Vidyalaya Yerwada	18.54515	73.884236
+1613	Agalambe Gaon	18.43151	73.717793
+1617	Kunjir mala	18.5204303	73.8567437
+1620	Power house theur	18.51942	74.046046
+1623	Kunjir Wadi Goan 	18.5204303	73.8567437
+1626	Chowdhari Bag 	18.5204303	73.8567437
+1630	Damodar nagar	18.5089382	73.8275705
+1633	Chaitanya bangala	18.5204303	73.8567437
+1635	Deasi poultry farm	18.5204303	73.8567437
+1639	Khandoba Mandir	18.453876	73.873541
+1642	Aaimata Mandir	18.471058	73.87523
+1645	Power house markal	18.6718661	73.9653715
+1649	Indrayani pul	18.670046	73.984985
+1652	Sawant College	18.4723729	73.9370843
+1653	Ramya Nagari	18.4693262	73.8687372
+1656	Autadewadi Phata	18.5204303	73.8567437
+1659	Kudale farm	18.5204303	73.8567437
+1662	Tikone Godown	18.5204303	73.8567437
+1664	Dnyaneshwar Paduka Wade Bolhai	18.5204303	73.8567437
+1668	Bagal Vasti	18.5204303	73.8567437
+1671	Wade Bolhai	18.5204303	73.8567437
+1675	Mhasoba wasti	18.4797807	73.9412863
+1678	Ramchandranagar	18.5164908	73.8480476
+1681	Santnagar Chowk Taware Colony	18.4868947	73.855506
+1685	Transport nagar	18.6653272	73.767643
+1688	Dhayareshwar Industries	18.5204303	73.8567437
+1693	Shirole Petrol Pump	18.5204303	73.8567437
+1695	Vittbhatti XPS Company	18.5204303	73.8567437
+1699	Parandhwadi	18.6980909	73.6580359
+1702	Sadgurunagar	18.63525	73.851463
+1705	Dhavade wasti	18.525017	73.967346
+1708	40 Aundh Road	18.562405	73.833546
+1711	Sambhaji Chowk Ganesh Nagar	18.5111468	73.8371508
+1714	Abhinav kala vidyalaya	18.5054837	73.8532734
+1718	Shitole wasti Soos	18.5204303	73.8567437
+1722	Nandegaon	18.4503623	73.7995397
+1724	Shitole wasti Nandegaon	18.545401	73.713225
+1728	Rautwadi	18.7161991	73.5526032
+1731	Bhairoba Pumping Station	18.5204303	73.8567437
+1733	Gulmohar City Military Stadium	18.5204303	73.8567437
+1737	Rangehill Circle 1	18.5204303	73.8567437
+1741	Shantiban	18.401176	73.721465
+1134	Raviraj Hotel	18.5183409	73.840436
+\.
+
+
+--
 -- Name: routes_stop_id_seq; Type: SEQUENCE SET; Schema: public; Owner: bususer
 --
 
 SELECT pg_catalog.setval('routes_stop_id_seq', 1745, true);
+
+
+--
+-- Name: auth_group_name_key; Type: CONSTRAINT; Schema: public; Owner: bususer; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_group
+    ADD CONSTRAINT auth_group_name_key UNIQUE (name);
+
+
+--
+-- Name: auth_group_permissions_group_id_permission_id_key; Type: CONSTRAINT; Schema: public; Owner: bususer; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_group_id_permission_id_key UNIQUE (group_id, permission_id);
+
+
+--
+-- Name: auth_group_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: bususer; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_group_pkey; Type: CONSTRAINT; Schema: public; Owner: bususer; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_group
+    ADD CONSTRAINT auth_group_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_permission_content_type_id_codename_key; Type: CONSTRAINT; Schema: public; Owner: bususer; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_permission
+    ADD CONSTRAINT auth_permission_content_type_id_codename_key UNIQUE (content_type_id, codename);
+
+
+--
+-- Name: auth_permission_pkey; Type: CONSTRAINT; Schema: public; Owner: bususer; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_permission
+    ADD CONSTRAINT auth_permission_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: bususer; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user_groups
+    ADD CONSTRAINT auth_user_groups_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_groups_user_id_group_id_key; Type: CONSTRAINT; Schema: public; Owner: bususer; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user_groups
+    ADD CONSTRAINT auth_user_groups_user_id_group_id_key UNIQUE (user_id, group_id);
+
+
+--
+-- Name: auth_user_pkey; Type: CONSTRAINT; Schema: public; Owner: bususer; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user
+    ADD CONSTRAINT auth_user_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_user_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: bususer; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_user_permissions_user_id_permission_id_key; Type: CONSTRAINT; Schema: public; Owner: bususer; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_user_id_permission_id_key UNIQUE (user_id, permission_id);
+
+
+--
+-- Name: auth_user_username_key; Type: CONSTRAINT; Schema: public; Owner: bususer; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user
+    ADD CONSTRAINT auth_user_username_key UNIQUE (username);
+
+
+--
+-- Name: django_admin_log_pkey; Type: CONSTRAINT; Schema: public; Owner: bususer; Tablespace: 
+--
+
+ALTER TABLE ONLY django_admin_log
+    ADD CONSTRAINT django_admin_log_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_content_type_app_label_model_key; Type: CONSTRAINT; Schema: public; Owner: bususer; Tablespace: 
+--
+
+ALTER TABLE ONLY django_content_type
+    ADD CONSTRAINT django_content_type_app_label_model_key UNIQUE (app_label, model);
+
+
+--
+-- Name: django_content_type_pkey; Type: CONSTRAINT; Schema: public; Owner: bususer; Tablespace: 
+--
+
+ALTER TABLE ONLY django_content_type
+    ADD CONSTRAINT django_content_type_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_session_pkey; Type: CONSTRAINT; Schema: public; Owner: bususer; Tablespace: 
+--
+
+ALTER TABLE ONLY django_session
+    ADD CONSTRAINT django_session_pkey PRIMARY KEY (session_key);
+
+
+--
+-- Name: django_site_pkey; Type: CONSTRAINT; Schema: public; Owner: bususer; Tablespace: 
+--
+
+ALTER TABLE ONLY django_site
+    ADD CONSTRAINT django_site_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: routes_route_pkey; Type: CONSTRAINT; Schema: public; Owner: bususer; Tablespace: 
+--
+
+ALTER TABLE ONLY routes_route
+    ADD CONSTRAINT routes_route_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: routes_route_stops_pkey; Type: CONSTRAINT; Schema: public; Owner: bususer; Tablespace: 
+--
+
+ALTER TABLE ONLY routes_route_stops
+    ADD CONSTRAINT routes_route_stops_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: routes_route_stops_route_id_stop_id_key; Type: CONSTRAINT; Schema: public; Owner: bususer; Tablespace: 
+--
+
+ALTER TABLE ONLY routes_route_stops
+    ADD CONSTRAINT routes_route_stops_route_id_stop_id_key UNIQUE (route_id, stop_id);
+
+
+--
+-- Name: routes_stop_pkey; Type: CONSTRAINT; Schema: public; Owner: bususer; Tablespace: 
+--
+
+ALTER TABLE ONLY routes_stop
+    ADD CONSTRAINT routes_stop_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_group_permissions_group_id; Type: INDEX; Schema: public; Owner: bususer; Tablespace: 
+--
+
+CREATE INDEX auth_group_permissions_group_id ON auth_group_permissions USING btree (group_id);
+
+
+--
+-- Name: auth_group_permissions_permission_id; Type: INDEX; Schema: public; Owner: bususer; Tablespace: 
+--
+
+CREATE INDEX auth_group_permissions_permission_id ON auth_group_permissions USING btree (permission_id);
+
+
+--
+-- Name: auth_permission_content_type_id; Type: INDEX; Schema: public; Owner: bususer; Tablespace: 
+--
+
+CREATE INDEX auth_permission_content_type_id ON auth_permission USING btree (content_type_id);
+
+
+--
+-- Name: auth_user_groups_group_id; Type: INDEX; Schema: public; Owner: bususer; Tablespace: 
+--
+
+CREATE INDEX auth_user_groups_group_id ON auth_user_groups USING btree (group_id);
+
+
+--
+-- Name: auth_user_groups_user_id; Type: INDEX; Schema: public; Owner: bususer; Tablespace: 
+--
+
+CREATE INDEX auth_user_groups_user_id ON auth_user_groups USING btree (user_id);
+
+
+--
+-- Name: auth_user_user_permissions_permission_id; Type: INDEX; Schema: public; Owner: bususer; Tablespace: 
+--
+
+CREATE INDEX auth_user_user_permissions_permission_id ON auth_user_user_permissions USING btree (permission_id);
+
+
+--
+-- Name: auth_user_user_permissions_user_id; Type: INDEX; Schema: public; Owner: bususer; Tablespace: 
+--
+
+CREATE INDEX auth_user_user_permissions_user_id ON auth_user_user_permissions USING btree (user_id);
+
+
+--
+-- Name: django_admin_log_content_type_id; Type: INDEX; Schema: public; Owner: bususer; Tablespace: 
+--
+
+CREATE INDEX django_admin_log_content_type_id ON django_admin_log USING btree (content_type_id);
+
+
+--
+-- Name: django_admin_log_user_id; Type: INDEX; Schema: public; Owner: bususer; Tablespace: 
+--
+
+CREATE INDEX django_admin_log_user_id ON django_admin_log USING btree (user_id);
+
+
+--
+-- Name: django_session_expire_date; Type: INDEX; Schema: public; Owner: bususer; Tablespace: 
+--
+
+CREATE INDEX django_session_expire_date ON django_session USING btree (expire_date);
+
+
+--
+-- Name: routes_route_from_stop_id; Type: INDEX; Schema: public; Owner: bususer; Tablespace: 
+--
+
+CREATE INDEX routes_route_from_stop_id ON routes_route USING btree (from_stop_id);
+
+
+--
+-- Name: routes_route_stops_route_id; Type: INDEX; Schema: public; Owner: bususer; Tablespace: 
+--
+
+CREATE INDEX routes_route_stops_route_id ON routes_route_stops USING btree (route_id);
+
+
+--
+-- Name: routes_route_stops_stop_id; Type: INDEX; Schema: public; Owner: bususer; Tablespace: 
+--
+
+CREATE INDEX routes_route_stops_stop_id ON routes_route_stops USING btree (stop_id);
+
+
+--
+-- Name: routes_route_to_stop_id; Type: INDEX; Schema: public; Owner: bususer; Tablespace: 
+--
+
+CREATE INDEX routes_route_to_stop_id ON routes_route USING btree (to_stop_id);
+
+
+--
+-- Name: auth_group_permissions_permission_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: bususer
+--
+
+ALTER TABLE ONLY auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_permission_id_fkey FOREIGN KEY (permission_id) REFERENCES auth_permission(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_groups_group_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: bususer
+--
+
+ALTER TABLE ONLY auth_user_groups
+    ADD CONSTRAINT auth_user_groups_group_id_fkey FOREIGN KEY (group_id) REFERENCES auth_group(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_user_permissions_permission_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: bususer
+--
+
+ALTER TABLE ONLY auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_permission_id_fkey FOREIGN KEY (permission_id) REFERENCES auth_permission(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: content_type_id_refs_id_728de91f; Type: FK CONSTRAINT; Schema: public; Owner: bususer
+--
+
+ALTER TABLE ONLY auth_permission
+    ADD CONSTRAINT content_type_id_refs_id_728de91f FOREIGN KEY (content_type_id) REFERENCES django_content_type(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: django_admin_log_content_type_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: bususer
+--
+
+ALTER TABLE ONLY django_admin_log
+    ADD CONSTRAINT django_admin_log_content_type_id_fkey FOREIGN KEY (content_type_id) REFERENCES django_content_type(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: django_admin_log_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: bususer
+--
+
+ALTER TABLE ONLY django_admin_log
+    ADD CONSTRAINT django_admin_log_user_id_fkey FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: group_id_refs_id_3cea63fe; Type: FK CONSTRAINT; Schema: public; Owner: bususer
+--
+
+ALTER TABLE ONLY auth_group_permissions
+    ADD CONSTRAINT group_id_refs_id_3cea63fe FOREIGN KEY (group_id) REFERENCES auth_group(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: route_id_refs_id_97d531f3; Type: FK CONSTRAINT; Schema: public; Owner: bususer
+--
+
+ALTER TABLE ONLY routes_route_stops
+    ADD CONSTRAINT route_id_refs_id_97d531f3 FOREIGN KEY (route_id) REFERENCES routes_route(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: routes_route_from_stop_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: bususer
+--
+
+ALTER TABLE ONLY routes_route
+    ADD CONSTRAINT routes_route_from_stop_id_fkey FOREIGN KEY (from_stop_id) REFERENCES routes_stop(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: routes_route_stops_stop_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: bususer
+--
+
+ALTER TABLE ONLY routes_route_stops
+    ADD CONSTRAINT routes_route_stops_stop_id_fkey FOREIGN KEY (stop_id) REFERENCES routes_stop(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: routes_route_to_stop_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: bususer
+--
+
+ALTER TABLE ONLY routes_route
+    ADD CONSTRAINT routes_route_to_stop_id_fkey FOREIGN KEY (to_stop_id) REFERENCES routes_stop(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: user_id_refs_id_831107f1; Type: FK CONSTRAINT; Schema: public; Owner: bususer
+--
+
+ALTER TABLE ONLY auth_user_groups
+    ADD CONSTRAINT user_id_refs_id_831107f1 FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: user_id_refs_id_f2045483; Type: FK CONSTRAINT; Schema: public; Owner: bususer
+--
+
+ALTER TABLE ONLY auth_user_user_permissions
+    ADD CONSTRAINT user_id_refs_id_f2045483 FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
 --
