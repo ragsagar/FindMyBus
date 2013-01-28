@@ -30,6 +30,18 @@ class ListField(models.fields.CharField):
         return json.dumps(value)
 
 
+class NearbyPlace(models.Model):
+    """
+    Model that represents each nearby place of a stop.
+    """
+    name = models.CharField(max_length=300)
+    latitude = models.CharField(max_length=20)
+    longitude = models.CharField(max_length=20)
+
+    def __unicode__(self):
+        return self.name
+
+
 class Stop(models.Model):
     """
     Represents each bus stop.
@@ -37,6 +49,7 @@ class Stop(models.Model):
     name = models.CharField(max_length=50)
     latitude = models.CharField(max_length=20)
     longitude = models.CharField(max_length=20)
+    nearby_places = models.ManyToManyField(NearbyPlace, related_name='stops')
 
     def __unicode__(self):
         return self.name
@@ -67,12 +80,12 @@ class Route(models.Model):
     # added to some route numbers.
     number = models.CharField(max_length=5)
     name = models.CharField(max_length=100)
-    stops = models.ManyToManyField(Stop, related_name='stops')
+    stops = models.ManyToManyField(Stop, related_name='routes')
     from_stop = models.ForeignKey(Stop, related_name='from_stop')
     to_stop = models.ForeignKey(Stop, related_name='to_stop')
     objects = RouteManager()
 
     def __unicode__(self):
-        return unicode(self.number)
+        return self.number
 
 
