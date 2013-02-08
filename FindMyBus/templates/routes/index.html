@@ -1,0 +1,55 @@
+{% extends "routes/base.html" %}
+
+{% block title %}Find My Bus{% endblock %}
+
+{% block content %}
+<article class="container-fluid">
+    <header class="row-fluid" id="mainheader">
+        <h1 class="brand"><a href="/">Find My Bus</a></h1>
+    </header>
+    <section id="mainform" class="row-fluid">
+        <form id="mainform" method="get" action="/api/search_route/">
+                <input class="span5" type="text" name="from" id="from" placeholder="From" />
+                <input class="span5" type="text" name="to" id="to" placeholder="To" />
+                <input type="hidden" name="format" value="json" />
+                <input class="span2 btn text" type="submit" value="Find My Bus" id="findbn" />
+        </form>
+    </section>
+    <section class="row-fluid" id="result"></section>
+</article>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ STATIC_URL }}js/findmybus.js"></script>
+<script>
+    var img = document.createElement('img');
+    img.src = "{{ STATIC_URL }}images/ajax_wait.gif";
+    img.alt = "Loading...";
+    var result = document.getElementById('result');
+    document.getElementById('findbn').onclick = function(e) {
+        var from = document.getElementById("from").value.trim(),
+            to = document.getElementById("to").value.trim();
+        if (from != '' && to != '') {
+            result.innerHTML = "";
+            result.className += " waiting";
+            result.appendChild(img);
+            fmb.getRoutes(from, to, function(routes){
+                var ul = document.createElement("ul");
+                ul.className = "routes";
+                routes.forEach(function(route){
+                    var li = document.createElement("li");
+                    li.innerHTML = '<a href="/api/route/' + route.number + '">' 
+                                 + route.number + ' - ' + route.name + '</a>';
+                    ul.appendChild(li);
+                });
+                result.className = result.className.replace(/\bwaiting\b/, '');
+                result.removeChild(img);
+                result.appendChild(ul);
+            });
+        } else {
+            console.log('The from and to params cannot be blank');
+        }
+        e.preventDefault(); 
+    };
+</script>
+{% endblock %}

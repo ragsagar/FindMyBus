@@ -1,0 +1,82 @@
+@font-face {
+    font-family: "Open Sans";
+    src: url(../fonts/OpenSans-Regular.ttf) format("truetype");
+}
+
+@font-face {
+    font-family: "Open Sans";
+    src: url(../fonts/OpenSans-Bold.ttf) format("truetype");
+    font-weight: bold;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.container-fluid {
+    width: 60%;
+    margin: auto;
+    font-family: "Open Sans", Helvetica;
+}
+
+#findbn {
+    vertical-align: top;
+    border-radius: 0;
+}
+
+.text:before, .text:after {
+    content: attr(title);
+    color: rgba(255,255,255,1);
+    position: absolute;
+    padding:90px;
+    letter-spacing:-4px;
+}
+.text:before {
+    top: 1px;
+    left: 1px;
+    opacity:.12;
+}
+.text:after {
+    top: 2px;
+    left: 2px;
+    opacity:.12;
+}
+
+#from, #to {
+    border: 1px solid #ddd;
+    border-radius: 0;
+}
+
+#from:focus, #to:focus {
+    border: 1px solid rgb(82, 168, 236);
+    box-shadow: rgba(82, 168, 236, 0.6) 0px 0px 4px 0px inset;
+}
+
+#result li {
+    list-style: none;
+    padding-top: 3px;
+}
+
+.waiting {
+    text-align: center;
+}
+
+
+#mainform {
+    width: 100%;
+    padding-top: 1%;
+}
+
+#mainheader {
+    text-align: center;
+}
+
+#mainheader h1 {
+    padding: 0;
+}
+
+#mainheader a:hover {
+    text-decoration: none; 
+}
+

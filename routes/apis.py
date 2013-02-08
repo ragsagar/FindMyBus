@@ -22,12 +22,15 @@ class RouteSearchResource(DetailResource):
     Returns the routes that that has given stops.
     """
     def get(self, request, *args, **kwargs):
+        print(request.GET)
         route_list = {}
         from_place = request.GET.get('from', None)
         to_place = request.GET.get('to', None)
         if not from_place and not to_place:
             return 
-        route_list['objects'] = Route.objects.get_routes(from_place, to_place)
+        result = [{'number': route.number, 'name': route.name}
+                  for route in Route.objects.get_routes(from_place, to_place)]
+        route_list['objects'] = result
         return route_list
 
     class Meta:
