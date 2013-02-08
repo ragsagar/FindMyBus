@@ -34,17 +34,21 @@
             result.className += " waiting";
             result.appendChild(img);
             fmb.getRoutes(from, to, function(routes){
-                var ul = document.createElement("ul");
-                ul.className = "routes";
-                routes.forEach(function(route){
-                    var li = document.createElement("li");
-                    li.innerHTML = '<a href="/api/route/' + route.number + '">' 
-                                 + route.number + ' - ' + route.name + '</a>';
-                    ul.appendChild(li);
-                });
-                result.className = result.className.replace(/\bwaiting\b/, '');
                 result.removeChild(img);
-                result.appendChild(ul);
+                result.className = result.className.replace(/\bwaiting\b/, '');
+                if (routes.length > 0) {
+                    var ul = document.createElement("ul");
+                    ul.className = "routes";
+                    routes.forEach(function(route){
+                        var li = document.createElement("li");
+                        li.innerHTML = '<a href="/api/route/' + route.number + '">' 
+                                     + route.number + ' - ' + route.name + '</a>';
+                        ul.appendChild(li);
+                    });
+                    result.appendChild(ul);
+                } else {
+                    result.innerHTML = "Sorry, no routes found :(";
+                }
             });
         } else {
             console.log('The from and to params cannot be blank');
